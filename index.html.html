@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Humsafar · Cleartrip concept · Bhaumik Amin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --or:#FF4F17; --or-50:#FFF1EC; --or-100:#FFE0D4;
+  --gr:#11A670; --gr-50:#E8F7F0;
+  --rd:#D93025; --rd-50:#FDECEA;
+  --am:#B26A00; --am-50:#FFF6E5;
+  --ink:#1A1A1A; --ink2:#4D4D4D; --ink3:#6B6B6B; --line:#E7E7E7; --bg:#F4F4F4; --card:#fff;
+  --bl:#3366CC;
+  --r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:#E9E6E1;display:flex;align-items:center;justify-content:center;gap:48px;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input{font:inherit}
+
+/* ---------- desk side panel ---------- */
+.side{width:300px;font-size:13px;line-height:1.5;color:var(--ink2)}
+.side h1{font-size:20px;line-height:1.25;color:var(--ink);margin-bottom:8px;letter-spacing:-.01em}
+.side p{margin-bottom:12px}
+.side .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--or);margin-bottom:10px}
+.side .jump{display:flex;flex-direction:column;gap:6px;margin:14px 0 18px}
+.side .jump button{text-align:left;padding:9px 12px;border-radius:8px;background:#fff;border:1px solid #DAD6D0;font-size:13px}
+.side .jump button:hover{border-color:var(--or);color:var(--or)}
+.fab{display:none;position:absolute;right:12px;top:52px;z-index:30;background:#1F1F1F;color:#fff;font-size:12px;font-weight:600;padding:8px 12px;border-radius:999px;opacity:.9}
+.side .fine{font-size:11px;color:var(--ink3);border-top:1px solid #D8D4CE;padding-top:12px}
+
+/* ---------- phone ---------- */
+.phone{width:390px;height:844px;background:var(--bg);border-radius:44px;box-shadow:0 0 0 10px #111,0 30px 80px rgba(0,0,0,.25);position:relative;overflow:hidden;display:flex;flex-direction:column}
+@media (max-width:760px){
+  body{background:var(--bg);display:block}
+  .side{display:none}
+  .fab{display:block!important}
+  .phone{width:100%;height:100dvh;border-radius:0;box-shadow:none}
+}
+.status{height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:14px;font-weight:600;background:#fff}
+.status i{font-style:normal;letter-spacing:1px;font-size:11px}
+.screen{position:absolute;inset:44px 0 0 0;display:flex;flex-direction:column;background:var(--bg);transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .25s}
+.screen.hidden{transform:translateX(30px);opacity:0;pointer-events:none}
+.top{background:#fff;padding:10px 16px 12px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);flex:none}
+.top .back{width:32px;height:32px;border-radius:50%;display:grid;place-items:center}
+.top .back:hover{background:var(--bg)}
+.top .t{font-weight:600;font-size:15px}
+.top .s{font-size:12px;color:var(--ink3)}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth}
+.scroll::-webkit-scrollbar{width:0}
+
+/* ---------- common ---------- */
+.card{background:var(--card);border-radius:var(--r);border:1px solid var(--line)}
+.btn{background:var(--or);color:#fff;font-weight:600;border-radius:8px;padding:13px 16px;font-size:15px;transition:transform .1s,filter .15s}
+.btn:active{transform:scale(.98)}
+.btn:disabled{background:#CFCFCF;cursor:not-allowed}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--ink)}
+.btn.sm{padding:8px 12px;font-size:13px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:11px 14px;border-radius:999px;border:1px solid #D6D6D6;background:#fff;font-size:13px;transition:all .15s;white-space:nowrap}
+.chip:hover{border-color:var(--ink2)}
+.chip:active{transform:scale(.97)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--bl);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+.chip.on{border-color:var(--or);background:var(--or-50);color:#B83300}
+.chip .x{opacity:.5}
+.chip.add{border-style:dashed;color:var(--ink2)}
+.chip.add:hover{border-color:var(--or);color:var(--or)}
+.chip.mine:after{content:"✕";font-size:11px;opacity:.55;margin-left:2px}
+.chip-in{display:inline-flex;align-items:center;gap:4px;padding:3px 4px 3px 12px;border-radius:999px;border:1.5px solid var(--or);background:#fff;animation:pop .2s}
+.chip-in input{border:0;outline:0;font-size:13px;width:150px;background:transparent}
+.chip-in button{width:26px;height:26px;border-radius:50%;background:var(--or);color:#fff;font-size:12px;display:grid;place-items:center}
+.cal-m{font-size:14px;font-weight:600;margin:6px 2px 8px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);row-gap:4px;margin-bottom:16px}
+.cal-g .dw{text-align:center;font-size:11px;color:var(--ink3);padding-bottom:4px}
+.cal-d{height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:14px;font-weight:500;border-radius:0;transition:background .12s}
+.cal-d small{font-size:9.5px;font-weight:500;color:var(--ink3);margin-top:1px}
+.cal-d small.lo{color:#0B7A52}.cal-d small.hi{color:var(--rd)}.cal-d small.mid{color:var(--am)}
+.cal-d:hover{background:#F3F3F3}
+.cal-d.in{background:var(--or-50)}
+.cal-d.s,.cal-d.e{background:var(--or);color:#fff}
+.cal-d.s small,.cal-d.e small{color:#FFD9CC}
+.cal-d.s{border-radius:10px 0 0 10px}.cal-d.e{border-radius:0 10px 10px 0}
+.cal-leg{display:flex;gap:12px;font-size:11px;color:var(--ink3);margin-bottom:10px;flex-wrap:wrap}
+.notes{margin:12px 16px 0;padding:12px 13px}
+.notes .nrow{display:flex;gap:8px;align-items:flex-start;font-size:13px;padding:5px 0;line-height:1.4}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px}
+.pill.g{background:var(--gr-50);color:#0B7A52}
+.pill.r{background:var(--rd-50);color:var(--rd)}
+.pill.a{background:var(--am-50);color:var(--am)}
+.pill.n{background:#F0F0F0;color:var(--ink2)}
+.muted{color:var(--ink3)}
+.lnk{color:var(--bl);font-weight:500;font-size:13px}
+.toast{position:absolute;left:16px;right:16px;bottom:96px;background:#1F1F1F;color:#fff;padding:12px 14px;border-radius:10px;font-size:13px;display:flex;gap:12px;align-items:center;justify-content:space-between;transform:translateY(20px);opacity:0;transition:all .25s;pointer-events:none;z-index:60}
+.toast.show{transform:none;opacity:1;pointer-events:auto}
+.toast button{color:#FF9A78;font-weight:600;min-height:44px;min-width:56px;margin:-8px -6px -8px 0}
+
+/* ---------- home ---------- */
+.home-head{background:#fff;padding:14px 16px 16px}
+.logo{font-weight:700;font-size:22px;letter-spacing:-.03em;color:var(--or);display:flex;align-items:center;gap:6px}
+.logo i{width:20px;height:20px;border-radius:5px;background:var(--or);display:grid;place-items:center}
+.lobs{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:14px}
+.lob{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);position:relative;grid-column:span 2}
+.lob.big{grid-column:span 3}
+.lob .ci{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;margin-bottom:8px}
+.lob b{display:block;font-size:14.5px}.lob.big b{font-size:17px}
+.lob small{font-size:11.5px;color:var(--ink3)}
+.lob em{position:absolute;top:-8px;right:10px;font-style:normal;font-size:11px;font-weight:600;background:var(--or);color:#fff;border-radius:6px;padding:2px 7px}
+.nav{flex:none;background:#1A1A1A;color:#9A9A9A;display:flex;justify-content:space-around;padding:10px 6px 16px;font-size:11.5px}
+.nav div{display:flex;flex-direction:column;align-items:center;gap:3px}.nav .on{color:#fff;font-weight:600}
+.rb{display:inline-block;background:#1A5CD7;color:#fff;font-weight:700;font-size:12px;padding:2px 6px;border-radius:5px}
+.rw{color:#1A5CD7;font-weight:600;font-size:12.5px}
+.was{text-decoration:line-through;color:var(--ink3);font-weight:500;font-size:12px}
+.offp{display:inline-block;background:var(--gr);color:#fff;font-size:11px;font-weight:600;padding:2px 6px;border-radius:5px}
+.deal{margin:0 0 10px;padding:9px 12px;border-radius:10px;background:var(--gr-50);border:1px solid #BFE7D6;font-size:12.5px;color:#0B7A52;font-weight:500}
+.fchips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.hofr{border-radius:12px;background:#fff;border:1px solid var(--line);margin-bottom:10px;padding:14px}
+.hofr b{display:block;font-size:14.5px}.hofr span{font-size:12.5px;color:var(--ink2)}
+.tabs{display:flex;gap:8px;margin-top:14px;overflow-x:auto}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;padding:10px 14px;border-radius:10px;background:var(--bg);font-size:13px;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:72px}
+.tab span{font-size:18px}
+.trippy-entry{margin:14px 16px;padding:16px;border-radius:16px;background:linear-gradient(160deg,#fff 0%,#FFF4EF 100%);border:1px solid var(--or-100);position:relative;overflow:hidden}
+.trippy-entry .badge{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--or);text-transform:uppercase}
+.trippy-entry h2{font-size:19px;line-height:1.25;margin:6px 0 4px;letter-spacing:-.01em}
+.trippy-entry p{font-size:13px;color:var(--ink2);margin-bottom:12px}
+.ask{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--ink);border-radius:12px;padding:6px 6px 6px 14px}
+.ask input{flex:1;border:0;outline:0;font-size:14px;background:transparent;min-width:0}
+.ask .go{width:38px;height:38px;border-radius:9px;background:var(--or);color:#fff;display:grid;place-items:center;flex:none}
+.ask .mic{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:var(--ink2);flex:none}
+.ask .mic.on{background:var(--rd);color:#fff;animation:pulse 1s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(217,48,37,.45)}100%{box-shadow:0 0 0 12px rgba(217,48,37,0)}}
+.week{display:flex;gap:8px;overflow-x:auto;margin:0 -16px 12px;padding:2px 16px}
+.week::-webkit-scrollbar{display:none}
+.wk{flex:none;width:112px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 10px}
+.wk.chg{border-color:var(--or);background:var(--or-50)}
+.wk small{display:block;font-size:11.5px;color:var(--ink3)}
+.wk b{display:block;font-size:13px;margin:2px 0 6px;line-height:1.2;min-height:31px}
+.wk .pace{margin:0}
+.lever .lt .pace{display:flex}.lever .lt b .pill{display:inline-flex;margin:0 0 0 4px;font-size:11px}
+.dmood{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.dmood b{font-size:13px}.dmood button{font-size:12.5px;color:var(--bl);font-weight:500;min-height:32px}
+.skipped .row{align-items:flex-start}
+.skipped .act{margin-top:6px;display:flex;gap:10px;align-items:center}
+.skipped .act button{font-size:12.5px;font-weight:600;color:var(--bl);min-height:32px}
+.examples{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.examples button{text-align:left;font-size:12.5px;color:var(--ink2);padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.7);border:1px dashed #E3CFC6}
+.examples button:hover{border-style:solid;border-color:var(--or)}
+.offers{padding:4px 16px 24px}
+.offers h3{font-size:15px;margin:10px 0}
+.offer{height:110px;border-radius:12px;background:#fff;border:1px solid var(--line);margin-bottom:10px;padding:14px;display:flex;flex-direction:column;justify-content:space-between}
+.offer .sk{height:10px;border-radius:6px;background:#EEE}
+
+/* ---------- chat ---------- */
+.chat{padding:14px 14px 20px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:88%;font-size:14px;line-height:1.45;animation:pop .28s ease-out}
+.msg.me{align-self:flex-end;background:var(--ink);color:#fff;padding:10px 13px;border-radius:16px 16px 4px 16px}
+.msg.ai{align-self:flex-start;max-width:100%;width:100%}
+.ai-name{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:6px}
+.av{width:20px;height:20px;border-radius:6px;background:var(--or);color:#fff;font-size:11px;display:grid;place-items:center;font-weight:700}
+.bubble{background:#fff;border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:12px 13px}
+.bubble p+p{margin-top:8px}
+.why{font-size:12px;color:var(--ink3);margin-top:8px;display:flex;gap:6px}
+.why:before{content:"↳"}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.typing{display:inline-flex;gap:4px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:4px 16px 16px 16px}
+.typing i{width:6px;height:6px;border-radius:50%;background:#BBB;animation:bl 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bl{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.roster{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.who{border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center;font-size:12px;position:relative;background:#FCFCFC}
+.who .face{font-size:20px;line-height:1.2}
+.who b{display:block;font-size:12.5px}
+.who small{color:var(--ink3);font-size:11px}
+.who .need{display:block;margin-top:4px;font-size:11.5px;color:#B83300;font-weight:500;min-height:13px}
+.who.added{animation:pop .3s}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.qhead{font-weight:600;font-size:14px}
+.confirm-row{display:flex;justify-content:flex-end;margin-top:10px}
+.budget-box{margin-top:12px}
+.budget-val{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.budget-val small{font-size:13px;font-weight:500;color:var(--ink3)}
+input[type=range]{width:100%;accent-color:var(--or);margin:10px 0 4px}
+.range-l{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3)}
+.composer{flex:none;background:#fff;border-top:1px solid var(--line);padding:10px 12px 18px;display:flex;gap:8px;align-items:center}
+.composer .ask{flex:1;border-width:1px;border-color:#CFCFCF}
+
+/* ---------- planning ---------- */
+.plan-load{padding:22px 18px}
+.plan-load h2{font-size:20px;letter-spacing:-.01em;margin-bottom:4px}
+.steps{margin-top:18px;display:flex;flex-direction:column;gap:2px}
+.step{display:flex;gap:12px;padding:10px 0;align-items:flex-start;opacity:.35;transition:opacity .3s}
+.step.on,.step.done{opacity:1}
+.step .dot{width:22px;height:22px;border-radius:50%;border:2px solid #CCC;flex:none;display:grid;place-items:center;font-size:12px;margin-top:1px}
+.step.on .dot{border-color:var(--or);border-top-color:transparent;animation:spin .8s linear infinite}
+.step.done .dot{background:var(--gr);border-color:var(--gr);color:#fff}
+@keyframes spin{to{transform:rotate(360deg)}}
+.step b{font-size:14px;font-weight:600;display:block}
+.step span{font-size:12.5px;color:var(--ink2)}
+.step .count{font-variant-numeric:tabular-nums}
+.skel{margin-top:22px}
+.skel .sk{height:72px;border-radius:12px;background:linear-gradient(90deg,#EBEBEB 25%,#F6F6F6 50%,#EBEBEB 75%);background-size:200% 100%;animation:sh 1.2s infinite;margin-bottom:10px}
+@keyframes sh{to{background-position:-200% 0}}
+.err{margin:30px 16px;text-align:center;padding:26px 18px}
+.err .ic{font-size:32px;margin-bottom:10px}
+.err h3{font-size:17px;margin-bottom:6px}
+.err p{font-size:13px;color:var(--ink2);margin-bottom:16px}
+
+/* ---------- plan ---------- */
+.trip-head{background:#fff;padding:14px 16px 16px;border-bottom:1px solid var(--line)}
+.trip-head h2{font-size:20px;letter-spacing:-.01em}
+.trip-meta{font-size:12.5px;color:var(--ink2);margin-top:2px}
+.people{display:flex;gap:4px;margin-top:10px;flex-wrap:wrap}
+.people .pp{font-size:11.5px;padding:4px 8px;border-radius:999px;background:var(--bg);display:flex;gap:4px;align-items:center}
+.meter{margin-top:14px}
+.meter-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px}
+.meter-top b{font-size:17px;font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:6px;background:#EEE;margin-top:6px;position:relative;overflow:visible}
+.bar .fill{height:100%;border-radius:6px;background:var(--gr);transition:width .5s cubic-bezier(.2,.8,.2,1),background .3s}
+.bar .cap{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink);border-radius:2px}
+.alert{margin:12px 16px 0;padding:12px 13px;border-radius:12px;display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.4}
+.alert.r{background:var(--rd-50);border:1px solid #F6C9C4}
+.alert.g{background:var(--gr-50);border:1px solid #BFE7D6}
+.alert .ac{flex:1}
+.alert b{display:block;font-size:13.5px;margin-bottom:2px}
+.sec{padding:16px 16px 0}
+.sec-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sec-h h3{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);font-weight:600}
+.item{padding:13px;margin-bottom:10px;transition:box-shadow .3s,border-color .3s}
+.item.flash{border-color:var(--or);box-shadow:0 0 0 3px var(--or-100)}
+.item-top{display:flex;justify-content:space-between;gap:10px}
+.item-top .k{font-size:11px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.item-top h4{font-size:15px;margin-top:2px;letter-spacing:-.005em}
+.item-top .sub{font-size:12.5px;color:var(--ink2);margin-top:2px}
+.price{text-align:right;font-weight:700;font-size:15px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.price small{display:block;font-weight:500;font-size:11px;color:var(--ink3)}
+.fit{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.item-act{display:flex;gap:14px;margin-top:11px;padding-top:10px;border-top:1px dashed var(--line);align-items:center}
+.item-act button{font-size:13px;font-weight:500;color:var(--bl);min-height:44px;padding:0 4px;margin:-8px 0}
+.item-act .lock{margin-left:auto;color:var(--ink3);display:flex;gap:4px;align-items:center}
+.item-act .lock.on{color:var(--ink);font-weight:600}
+.reason{display:none;margin-top:10px;font-size:12.5px;line-height:1.5;color:var(--ink2);background:#FAFAFA;border-radius:8px;padding:10px 11px}
+.reason.open{display:block;animation:pop .2s}
+.reason li{margin-left:16px;margin-bottom:3px}
+.reason .src{font-size:11px;color:var(--ink3);margin-top:6px}
+.day{display:flex;gap:12px;margin-bottom:10px;padding:12px 13px}
+.day .dn{flex:none;width:42px;text-align:center}
+.day .dn b{display:block;font-size:18px}
+.day .dn small{font-size:11.5px;color:var(--ink3);text-transform:uppercase}
+.day .dc{flex:1;min-width:0}
+.slot{font-size:13px;display:flex;gap:8px;padding:3px 0;line-height:1.35}
+.slot .tm{width:42px;flex:none;color:var(--ink3);font-size:11.5px;padding-top:1px}
+.slot.rest{color:var(--ink3);font-style:italic}
+.slot.new{background:var(--gr-50);border-radius:6px;margin:0 -6px;padding:3px 6px;animation:pop .3s}
+.slot.gone{text-decoration:line-through;color:var(--ink3)}
+.pace{display:flex;gap:3px;align-items:center;font-size:11px;color:var(--ink3);margin-bottom:6px}
+.pace i{width:14px;height:5px;border-radius:3px;background:#E3E3E3}
+.pace i.f{background:var(--or)}
+.skipped{padding:12px 13px;margin-bottom:10px}
+.skipped .row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #F0F0F0;font-size:13px;line-height:1.4}
+.skipped .row:last-child{border:0}
+.skipped .row .sv{margin-left:auto;font-size:12px;white-space:nowrap;color:var(--gr);font-weight:600}
+.bottom{flex:none;background:#fff;border-top:1px solid var(--line);padding:10px 14px 18px;display:flex;gap:10px;align-items:center}
+.bottom .tot{flex:1}
+.bottom .tot b{font-size:18px;font-variant-numeric:tabular-nums;display:block}
+.bottom .tot small{font-size:11.5px;color:var(--ink3)}
+.askbar{margin:16px 16px 0;padding:10px 12px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink2);cursor:pointer;border-style:dashed}
+.askbar .av{flex:none}
+
+/* ---------- sheets ---------- */
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .25s;z-index:40}
+.scrim.show{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:20px 20px 0 0;max-height:86%;display:flex;flex-direction:column;transform:translateY(105%);transition:transform .32s cubic-bezier(.2,.8,.2,1);z-index:50}
+.sheet.show{transform:none}
+.sheet .grab{width:38px;height:4px;border-radius:4px;background:#D6D6D6;margin:8px auto 4px}
+.sheet .sh-h{padding:8px 18px 12px;border-bottom:1px solid var(--line)}
+.sheet .sh-h h3{font-size:17px;letter-spacing:-.01em}
+.sheet .sh-h p{font-size:12.5px;color:var(--ink2);margin-top:3px;line-height:1.4}
+.sheet .sh-b{padding:14px 16px;overflow-y:auto;flex:1}
+.sheet .sh-f{padding:12px 16px 20px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.lever{border:1.5px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;gap:12px;cursor:pointer;transition:border-color .15s,background .15s;text-align:left;width:100%}
+.lever.on{border-color:var(--or);background:var(--or-50)}
+.lever.no{opacity:.75}
+.lever .cb{width:20px;height:20px;border-radius:6px;border:2px solid #BDBDBD;flex:none;display:grid;place-items:center;color:#fff;font-size:12px;margin-top:1px}
+.lever.on .cb{background:var(--or);border-color:var(--or)}
+.lever .lt{flex:1}
+.lever .lt b{font-size:14px;display:block;line-height:1.3}
+.lever .lt span{font-size:12.5px;color:var(--ink2);display:block;margin-top:4px;line-height:1.4}
+.lever .lt .who-hit{margin-top:6px;display:flex;gap:5px;flex-wrap:wrap}
+.lever .save{font-weight:700;color:var(--gr);font-size:14px;white-space:nowrap}
+.alt{border:1.5px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;cursor:pointer;text-align:left;width:100%;display:block}
+.alt.on{border-color:var(--or);background:var(--or-50)}
+.alt .item-top h4{font-size:14.5px}
+.mtx{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:10px}
+.mtx div{text-align:center;font-size:11.5px;border-radius:6px;padding:5px 2px;background:#F5F5F5;line-height:1.25}
+.mtx div.ok{background:var(--gr-50);color:#0B7A52}
+.mtx div.bad{background:var(--rd-50);color:var(--rd)}
+.mtx div i{display:block;font-style:normal;font-size:13px}
+.wa{background:#ECE5DD;border-radius:12px;padding:14px;font-size:13px}
+.wa .wab{background:#fff;border-radius:8px;padding:10px;box-shadow:0 1px 1px rgba(0,0,0,.08);max-width:92%}
+.wa .wab.in{background:#fff}
+.wa .wab.out{background:#DCF8C6;margin-left:auto}
+.wa .wab + .wab{margin-top:8px}
+.wa .nm{font-size:11.5px;font-weight:600;color:#1F7A5A;margin-bottom:2px}
+.wa .preview{border-radius:6px;overflow:hidden;border:1px solid #EEE;margin-bottom:6px}
+.wa .preview .pv-top{background:var(--or);color:#fff;padding:8px 10px;font-weight:600;font-size:12.5px}
+.wa .preview .pv-b{padding:8px 10px;font-size:12px;line-height:1.45;color:var(--ink2)}
+.wa .tick{font-size:11.5px;color:#7A9;text-align:right;margin-top:3px}
+
+/* ---------- review / booking ---------- */
+.rv{padding:14px 16px}
+.rv .card{padding:13px;margin-bottom:10px}
+.rv-row{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;padding:6px 0}
+.rv-row span:last-child{font-variant-numeric:tabular-nums;font-weight:600}
+.cxl{font-size:12px;margin-top:4px}
+.trav{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.trav div{display:flex;justify-content:space-between;font-size:13px;padding:7px 10px;background:#FAFAFA;border-radius:8px}
+.bk{padding:22px 16px}
+.bk h2{font-size:20px;margin-bottom:4px}
+.bk-item{display:flex;align-items:center;gap:12px;padding:13px;margin-top:10px}
+.bk-item .st{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:13px;border:2px solid #CCC}
+.bk-item.wait .st{border-color:var(--or);border-top-color:transparent;animation:spin .8s linear infinite}
+.bk-item.ok .st{background:var(--gr);border-color:var(--gr);color:#fff}
+.bk-item.held .st{background:var(--am);border-color:var(--am);color:#fff}
+.bk-item.fail .st{background:var(--rd);border-color:var(--rd);color:#fff}
+.bk-item .bt{flex:1;font-size:13.5px}
+.bk-item .bt small{display:block;color:var(--ink3);font-size:12px}
+.fix{margin-top:16px;padding:14px;border:1.5px solid var(--rd);border-radius:14px;background:#fff;animation:pop .3s}
+.fix h3{font-size:15px;margin-bottom:4px}
+.fix p{font-size:13px;color:var(--ink2);line-height:1.45}
+.timer{font-variant-numeric:tabular-nums;font-weight:600;color:var(--am)}
+.done-hero{text-align:center;padding:34px 20px 10px}
+.done-hero .big{width:64px;height:64px;border-radius:50%;background:var(--gr);color:#fff;font-size:30px;display:grid;place-items:center;margin:0 auto 14px;animation:pop .4s}
+.done-hero h2{font-size:22px;letter-spacing:-.01em}
+.done-hero p{font-size:13.5px;color:var(--ink2);margin-top:6px}
+.next{margin:16px;padding:14px}
+.next li{list-style:none;display:flex;gap:10px;font-size:13px;padding:7px 0;line-height:1.4}
+.next li span{flex:none}
+#pack{display:none}
+@media print{
+  @page{size:A4;margin:14mm}
+  html,body{height:auto;background:#fff!important;display:block!important}
+  body>*:not(#pack){display:none!important}
+  #pack{display:block;font-family:Inter,system-ui,sans-serif;color:#1A1A1A;font-size:10.5pt;line-height:1.45}
+  #pack h1{font-size:22pt;letter-spacing:-.01em;margin:6pt 0 2pt}
+  #pack h2{font-size:10pt;text-transform:uppercase;letter-spacing:.06em;color:#D9431A;margin:16pt 0 6pt;padding-bottom:3pt;border-bottom:1.5pt solid #1A1A1A;break-after:avoid}
+  #pack .brand{display:flex;justify-content:space-between;font-size:9.5pt;color:#6B6B6B}
+  #pack .brand b{color:#FF4F17;font-size:12pt}
+  #pack table{width:100%;border-collapse:collapse}
+  #pack td,#pack th{text-align:left;vertical-align:top;padding:5pt 6pt 5pt 0;border-bottom:.5pt solid #DDD}
+  #pack th{font-size:8.5pt;text-transform:uppercase;letter-spacing:.04em;color:#6B6B6B;font-weight:600}
+  #pack .ref{font-weight:700;font-variant-numeric:tabular-nums}
+  #pack .mut{color:#6B6B6B;font-size:9.5pt}
+  #pack .box{border:.75pt solid #CCC;border-radius:6pt;padding:8pt 10pt;margin-bottom:8pt;break-inside:avoid}
+  #pack .box b.t{font-size:12pt;display:block}
+  #pack .grid{display:grid;grid-template-columns:1fr 1fr;gap:8pt}
+  #pack .day{display:block;padding:0;border:0;break-inside:avoid;margin-bottom:10pt}
+  #pack .day b.d{font-size:11.5pt;display:block;margin-bottom:2pt}
+  #pack .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  #pack .foot{margin-top:14pt;font-size:8.5pt;color:#6B6B6B;border-top:.5pt solid #CCC;padding-top:6pt}
+}
+</style>
+</head>
+<body>
+
+<aside class="side">
+  <span class="tag">Concept prototype</span>
+  <h1>Humsafar. An AI trip planner for the parent who plans for everyone.</h1>
+  <p>Persona: the Family Trip Planner. Neha, 36, Ahmedabad, is planning 5 days in Goa for 6 people: her husband, their 4 year old, Mummy-Papa and her niece.</p>
+  <p>Tap through the main journey on the phone, or jump straight to a state:</p>
+  <div class="jump">
+    <button onclick="App.restart()">↺ Start from the beginning</button>
+    <button onclick="App.jumpPlan(true)">Plan is over budget → 4 ways to fix it</button>
+    <button onclick="App.jumpPlan(false,'swap')">Swap the hotel without starting over</button>
+    <button onclick="App.jumpPlan(false,'share')">Send to family for a nod</button>
+    <button onclick="App.jumpBook()">Room sells out mid-booking</button>
+    <button onclick="App.jumpFail()">Planning fails (network drop)</button>
+  </div>
+  <p class="fine">By Bhaumik Amin, M.Des SDM, NID. Made for the Razorpay Design × NID assignment. Not affiliated with Cleartrip. All AI replies, prices, hotels and availability are simulated. Hotel names are fictional.</p>
+</aside>
+
+<div id="pack"></div>
+<div class="phone" id="phone">
+  <div class="status"><span>9:41</span><i>●●●● ᯤ ▮</i></div>
+
+  <!-- HOME -->
+  <section class="screen" id="s-home">
+    <div class="scroll">
+      <div class="home-head">
+        <div class="logo"><i><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></i>cleartrip</div>
+        <div class="lobs">
+          <div class="lob big"><em>Book at 0</em><div class="ci" style="background:#7B61FF"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="1"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 20v-4h4v4"/></svg></div><b>Hotels</b><small>Book at ₹0</small></div><div class="lob big"><div class="ci" style="background:#2F6FEB"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l18-7-6 14-3-6z"/></svg></div><b>Flights</b><small>Domestic and international</small></div>
+          <div class="lob "><div class="ci" style="background:#E5533C"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="14" rx="3"/><path d="M6 11h12M9 21l1.5-4M15 21l-1.5-4"/></svg></div><b>Trains</b><small>IRCTC partner</small></div><div class="lob "><div class="ci" style="background:#11A670"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="12" rx="2"/><path d="M4 11h16M8 20v-3M16 20v-3"/></svg></div><b>Buses</b><small>Across India</small></div><div class="lob "><em>NEW</em><div class="ci" style="background:#12A5C9"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V11M4 11a8 8 0 0116 0z"/></svg></div><b>Holidays</b><small>Packages</small></div>
+        </div>
+      </div>
+      <div class="trippy-entry">
+        <div class="badge">New · Humsafar beta</div>
+        <h2>Planning for the whole family? Tell me who's coming.</h2>
+        <p>I'll put flights, stay and days together around everyone's needs. You check every piece before anything is booked.</p>
+        <div class="ask">
+          <input id="homeInput" placeholder="e.g. 5 days in Goa for 6 of us…" onkeydown="if(event.key==='Enter')App.start()">
+          <button class="mic" aria-label="Speak" title="Speak in English, Hindi or Gujarati" onclick="App.mic('homeInput',this)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></button>
+          <button class="go" onclick="App.start()" aria-label="Send">→</button>
+        </div>
+        <div class="examples">
+          <button onclick="App.fillExample(0)">“Plan 5 days in Goa for 6 of us. Me, my husband Rohan, our 4 year old Aarav, Mummy-Papa, and my niece Kavya.”</button>
+          <button onclick="App.fillExample(1)">“Somewhere cool in May, 4 nights, kids' summer vacation”</button>
+        </div>
+      </div>
+      <div class="offers">
+        <h3>Offers for you</h3>
+        <div class="hofr"><b>Book hotels at ₹0</b><span>Pay closer to your check-in date. Free cancellation on most stays.</span></div>
+        <div class="hofr"><b>Kid Goes Free</b><span>On select holiday packages this season.</span></div>
+      </div>
+    </div>
+    <div class="nav"><div class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Home</div><div class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16v3a2 2 0 000 4v3H4v-3a2 2 0 000-4z"/><path d="M14 8v10"/></svg>My Trips</div><div class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M9 8V5h6v3"/></svg>Work</div><div class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-4 12.5-4 14 0"/></svg>Account</div><div class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 2 3-.5.5 3 2 2.5-2 2.5-.5 3-3-.5-2.5 2-2.5-2-3 .5-.5-3-2-2.5 2-2.5.5-3 3 .5z"/><path d="M9.5 14.5l5-5"/></svg>Offers</div></div>
+  </section>
+
+  <!-- CHAT -->
+  <section class="screen hidden" id="s-chat">
+    <div class="top">
+      <button class="back" onclick="App.restart()">←</button>
+      <div><div class="t">Humsafar</div><div class="s">Your trip, planned around your people</div></div>
+    </div>
+    <div class="scroll" id="chatScroll"><div class="chat" id="chat"></div></div>
+    <div class="composer">
+      <div class="ask"><input id="chatInput" placeholder="Type, or tap an option above" onkeydown="if(event.key==='Enter')App.freeText()"><button class="mic" aria-label="Speak" onclick="App.mic('chatInput',this)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></button><button class="go" onclick="App.freeText()">→</button></div>
+    </div>
+  </section>
+
+  <!-- PLANNING -->
+  <section class="screen hidden" id="s-plan-load">
+    <div class="top">
+      <button class="back" onclick="App.cancelPlanning()">←</button>
+      <div><div class="t">Building your Goa plan</div><div class="s">Usually under a minute</div></div>
+    </div>
+    <div class="scroll" id="loadBody"></div>
+  </section>
+
+  <!-- PLAN -->
+  <section class="screen hidden" id="s-plan">
+    <div class="top">
+      <button class="back" onclick="App.go('s-chat')">←</button>
+      <div style="flex:1"><div class="t">Your trip plan</div><div class="s" id="planSaved">Saved to My Trips · just now</div></div>
+      <button class="lnk" onclick="App.openShare()">Share</button>
+    </div>
+    <div class="scroll" id="planScroll"></div>
+    <div class="bottom">
+      <div class="tot"><b id="botTotal">₹0</b><small id="botSub">for 6 · all-in</small></div>
+      <button class="btn" id="reviewBtn" onclick="App.review()">Review &amp; book</button>
+    </div>
+  </section>
+
+  <!-- REVIEW -->
+  <section class="screen hidden" id="s-review">
+    <div class="top">
+      <button class="back" onclick="App.go('s-plan')">←</button>
+      <div><div class="t">Review before booking</div><div class="s">Nothing is booked until you tap Book</div></div>
+    </div>
+    <div class="scroll" id="reviewBody"></div>
+    <div class="bottom">
+      <div class="tot"><b id="rvTotal">₹0</b><small>4 bookings · hotel at ₹0 today</small></div>
+      <button class="btn" onclick="App.payStep()">Book all</button>
+    </div>
+  </section>
+
+  <!-- BOOKING -->
+  <section class="screen hidden" id="s-book">
+    <div class="top">
+      <div style="padding-left:6px"><div class="t">Booking your trip</div><div class="s">Please keep the app open</div></div>
+    </div>
+    <div class="scroll" id="bookBody"></div>
+  </section>
+
+  <!-- DONE -->
+  <section class="screen hidden" id="s-done">
+    <div class="scroll" id="doneBody"></div>
+  </section>
+
+  <button class="fab" onclick="App.openStates()">States</button>
+  <div class="scrim" id="scrim" onclick="App.closeSheet()"></div>
+  <div class="sheet" id="sheet"><div class="grab"></div><div id="sheetInner" style="display:flex;flex-direction:column;min-height:0;flex:1"></div></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMsg"></span><button id="toastBtn">Undo</button></div>
+</div>
+
+<script>
+/* =========================================================
+   Data (all simulated)
+   ========================================================= */
+const fmt = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const $ = id => document.getElementById(id);
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+const PEOPLE = [
+  {id:'neha', face:'👩🏽', name:'You', rel:'planner', said:'"Me"'},
+  {id:'rohan', face:'👨🏽', name:'Rohan', rel:'husband', said:'"my husband Rohan"'},
+  {id:'aarav', face:'🧒🏽', name:'Aarav', rel:'son', age:'4 yrs', said:'"our 4 year old Aarav"'},
+  {id:'ba', face:'👵🏽', name:'Mummy', rel:'', said:'"Mummy-Papa"', ask:'elder'},
+  {id:'papa', face:'👴🏽', name:'Papa', rel:'', said:'"Mummy-Papa"', ask:'elder'},
+  {id:'kavya', face:'👧🏽', name:'Kavya', rel:'niece', said:'"my niece Kavya"', ask:'kid'},
+];
+
+const HOTELS = {
+  caravela:{id:'caravela', score:9, name:'Caravela Bay Resort', area:'Varca, South Goa', nightly:19600,
+    rooms:'Family suite + ground-floor deluxe', rating:['4.4','Very Good','1.2k ratings'],
+    fit:{neha:1,rohan:1,aarav:1,ba:1,papa:1,kavya:1},
+    tags:[['g','Ground floor for Mummy'],['g','Kids pool, shallow end'],['g','Gujarati thali on request'],['n','4 min walk to beach'],['n','35 min from Dabolim']],
+    why:['Two of only nine South Goa properties with a <b>ground-floor room and a lift</b> to the dining area. No stairs between room, pool and food.','Shallow kids pool, and the beach is flat sand, not rocks. That suits Aarav.','The kitchen does a Gujarati thali on request. 41 reviews mention pure veg as "easy".','Quiet after 10 pm, which helps with Aarav\'s bedtime. I skipped Baga and Calangute because reviews flag night noise.']},
+  seabreeze:{id:'seabreeze', score:6, name:'Sea Breeze Retreat', area:'Benaulim, South Goa', nightly:15200,
+    rooms:'2 deluxe rooms, 1 on ground floor', rating:['4.1','Very Good','640 ratings'],
+    fit:{neha:1,rohan:1,aarav:0,ba:1,papa:1,kavya:1},
+    tags:[['g','Ground floor'],['r','No kids pool'],['g','Veg menu'],['n','2 min to beach']],
+    why:['Cheapest option that still has a ground-floor room.','No pool at all, so Aarav\'s only water time is the sea.']},
+  baga:{id:'baga', name:'Casa Tito Lane Hotel', area:'Baga, North Goa', nightly:18200, north:true,
+    rooms:'2 deluxe rooms, first floor, lift', rating:['4.0','Good','2.1k ratings'],
+    fit:{neha:1,rohan:1,aarav:0,ba:0,papa:1,kavya:1},
+    tags:[['r','Music till 1 am'],['r','No ground-floor room'],['a','1h40 from Dabolim'],['g','Water sports next door']],
+    why:['You asked to see this. It is cheaper and Kavya would like the beach.','Noise at night and no ground-floor room are why I left it out.']},
+  saver:{id:'saver', name:'Varca Palms Guest House', area:'Varca, South Goa', nightly:6800, score:0,
+    rooms:'2 AC rooms, both on the ground floor', rating:['3.9','Good','420 ratings'],
+    fit:{neha:1,rohan:1,aarav:0,ba:1,papa:1,kavya:1},
+    tags:[['g','Ground floor'],['r','No pool'],['a','No restaurant, veg cafe next door'],['n','8 min walk to beach']],
+    why:['The cheapest stay I found that still has ground-floor rooms.','Clean and family-run, but no pool, so Aarav only has the beach.']},
+  inn:{id:'inn', name:'Coco Lane Inn', area:'Benaulim, South Goa', nightly:9400, score:3,
+    rooms:'2 rooms, 1 on the ground floor', rating:['4.0','Good','880 ratings'],
+    fit:{neha:1,rohan:1,aarav:1,ba:1,papa:1,kavya:1},
+    tags:[['g','Ground floor'],['a','Small pool, no kids section'],['g','Veg breakfast'],['n','5 min walk to beach']],
+    why:['Best value under ₹10,000 a night with a ground-floor room.','The pool is small and has no shallow end, so Aarav needs an adult with him.']},
+  grand:{id:'grand', name:'The Aravali Grand', area:'Varca, South Goa · 5-star', nightly:34000, score:13,
+    rooms:'Ground-floor suite + connecting room', rating:['4.7','Excellent','3.4k ratings'],
+    fit:{neha:1,rohan:1,aarav:1,ba:1,papa:1,kavya:1},
+    tags:[['g','Ground-floor suite'],['g','Kids club and kids pool'],['g','Pure veg restaurant'],['g','Buggy to the private beach'],['n','35 min from Dabolim']],
+    why:['Your budget allows a 5-star, so I went for comfort.','Connecting rooms keep Mummy-Papa next door, and a buggy takes them to the beach.','A supervised kids club gives you and Rohan a few hours off.']},
+  palm:{id:'palm', score:5, name:'Palm Grove Villas', area:'Colva, South Goa', nightly:21000,
+    rooms:'1 private 3BHK villa, single storey', rating:['4.6','Excellent','310 ratings'],
+    fit:{neha:1,rohan:1,aarav:1,ba:1,papa:1,kavya:0},
+    tags:[['g','Single storey'],['g','Own kitchen'],['g','Private pool'],['a','12 min drive to beach']],
+    why:['Everyone under one roof, with no stairs anywhere.','A private kitchen makes pure veg meals easy.','Kavya would be 12 minutes from any water sports.']},
+};
+
+const BASE = {
+  flights: 53700,           // 6 x 8,950 return
+  transfers: 4800,
+  cabs: 11400,
+  dolphin: 4200,
+  spice: 7200,
+};
+let BUDGET = 150000;
+const DAY = 86400000, WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DEF_START = new Date(2026,11,21);
+const dAt = (i, st) => new Date((st||state.start).getFullYear(), (st||state.start).getMonth(), (st||state.start).getDate()+i);
+const dShort = d => `${d.getDate()} ${MO[d.getMonth()]}`;
+const dLong = d => `${WD[d.getDay()]} ${d.getDate()}`;
+const rangeLong = st => { const a=dAt(0,st), b=dAt(4,st); return a.getMonth()===b.getMonth() ? `${dLong(a)} – ${dLong(b)} ${MO[b.getMonth()]}` : `${dLong(a)} ${MO[a.getMonth()]} – ${dLong(b)} ${MO[b.getMonth()]}`; };
+const rangeShort = st => { const a=dAt(0,st), b=dAt(4,st); return a.getMonth()===b.getMonth() ? `${a.getDate()}–${b.getDate()} ${MO[b.getMonth()]}` : `${dShort(a)} – ${dShort(b)}`; };
+// Simulated season: Christmas to New Year is Goa's peak
+const md = d => (d.getMonth()+1)*100 + d.getDate();
+const peakNight = d => { const k=md(d); return k>=1225 || k<=101; };
+const peakOut = d => { const k=md(d); return k>=1223 || k<=101; };
+const peakBack = d => { const k=md(d); return k>=1227 || k<=103; };
+const peakNights = st => [0,1,2,3].filter(i=>peakNight(dAt(i,st))).length;
+const staySur = st => peakNights(st)*6200;
+const flySur = st => (peakOut(dAt(0,st))?8400:0) + (peakBack(dAt(4,st))?8400:0);
+const surcharge = st => staySur(st)+flySur(st);
+const dayFare = d => (BASE.flights + flySur(d))/6000;
+const rate = h => `<span class="rb">${h.rating[0]}</span> <span class="rw">${h.rating[1]}</span> <span class="muted" style="font-size:12px">(${h.rating[2]})</span>`;
+const pp = n => fmt(Math.round(n/600)*100);
+const taxes = n => Math.round(n*0.108/100)*100;
+const hotelAmt = () => HOTELS[state.hotel].nightly*4+staySur()+(state.bookFix==='villa'?2400:0);
+const flightsNow = () => TR[state.tr].cost+flySur()-(state.added.early?2100:0);
+const travelRef = () => trOf().air?'PNR 6E-QX4K2M':'PNR 842-1673950';
+const lakh = n => '₹' + (n/100000).toFixed(2).replace(/\.?0+$/,'') + 'L';
+
+const LEVERS = [
+  {id:'early', title:'Fly back on the 11:55 instead of 13:10', save:5400,
+   cost:'Checkout an hour earlier. Aarav will nap in the cab instead of the room.', hits:['aarav'], rec:true},
+  {id:'spice', title:'Swap the spice farm lunch for a beach shack lunch near the hotel', save:4800,
+   cost:'Kavya loses one half-day outing. Papa\'s veg options are thinner at shacks.', hits:['kavya','papa'], rec:true},
+  {id:'shuttle', title:'Use the hotel shuttle to Colva on Day 3, skip that day\'s cab', save:3800,
+   cost:'The shuttle runs only at 10 am and 4 pm. Less flexible if Aarav melts down.', hits:['aarav'], rec:false},
+  {id:'oneroom', title:'Put Mummy & Papa in the family suite and drop the second room', save:33600,
+   cost:'5 people in one room for 4 nights. You told me rest matters for them, so I don\'t recommend this.', hits:['ba','papa','neha','rohan','aarav'], rec:false, warn:true},
+];
+
+const levers = () => _levers().filter(l=>!(l.id==='early'&&!direct()) && !(l.id==='shuttle'&&state.cab==='basic') && !(l.id==='oneroom'&&HOTELS[state.hotel].nightly<15000));
+const _levers = () => surcharge()>0 ? [{id:'dates', title:`Move the trip to ${rangeShort(DEF_START)}, before Christmas week`, save:surcharge(),
+   cost:'Same 5 days and same plan, on cheaper dates. Check school and office leave first.', hits:['neha','rohan','kavya'], rec:true}, ...LEVERS] : LEVERS;
+const TR={
+  t3:{air:0,score:0,cost:17400,label:'Train, 3AC',k:'Train · 3AC · 6 berths',h:'Ahmedabad 18:10 → Madgaon 11:20',sub:'Overnight, 17 hours. You leave the evening before.',ret:'leaves Madgaon 14:40, home next morning',cxl:'₹180 per berth to cancel',pills:[['a','17 hours each way'],['g','Lower berths asked for Mummy-Papa'],['n','Aarav shares your berth']],gain:'',why:['The cheapest way to get six people to Goa.','It costs you a night each way. I asked for lower berths, but the railway confirms them only at charting.']},
+  t2:{air:0,score:1,cost:24600,label:'Train, 2AC',k:'Train · 2AC · 6 berths',h:'Ahmedabad 18:10 → Madgaon 11:20',sub:'Overnight, 17 hours. You leave the evening before.',ret:'leaves Madgaon 14:40, home next morning',cxl:'₹200 per berth to cancel',pills:[['a','17 hours each way'],['g','Curtains, more room'],['g','Lower berths asked for Mummy-Papa']],gain:'More room on the train, and curtains for Aarav\'s nap',why:['2AC has four berths to a bay and curtains, so the family gets one bay and a half.','Still 17 hours each way.']},
+  stop:{air:1,score:3,cost:41400,label:'Flight, 1 stop',k:'IndiGo · 6 seats · 1 stop',h:'AMD 08:20 → GOI 13:05',sub:'Via Mumbai, 1h35 between flights.',ret:'11:40 → 16:25 via Mumbai',cxl:'Free cancel',pills:[['a','Change of plane in Mumbai'],['g','No 6 am start'],['n','Wheelchair help can be booked']],gain:'Fly instead: under 5 hours, not 17',why:['₹12,300 cheaper than the non-stop for six.','The change in Mumbai means two security walks with Aarav and the grandparents.']},
+  non:{air:2,score:5,cost:53700,label:'Flight, non-stop',k:'IndiGo · 6 seats',h:'AMD 09:40 → GOI 11:15',sub:'',ret:'',cxl:'Free cancel',pills:[],gain:'Non-stop: no change of plane in Mumbai',why:[]},
+  flex:{air:2,score:5.5,cost:62700,label:'Flight, non-stop, extra legroom',k:'IndiGo · 6 seats · extra legroom',h:'AMD 09:40 → GOI 11:15',sub:'',ret:'',cxl:'Free cancel and free date change',pills:[],gain:'Front rows with extra legroom, meals and free date change',why:[]} };
+const CAB={
+  basic:{score:0,cost:9800,label:'7-seater on outing days',h:'7-seater, outing days only',sub:'Station or airport both ways + 2 day trips',pills:[['g','Child seat for Aarav'],['a','Hotel shuttle on other days']],gain:''},
+  innova:{score:2,cost:16200,label:'Innova, 3 day trips',h:'Innova, 7 seats, with child seat',sub:'Airport both ways + 3 day trips',pills:[['g','Child seat for Aarav'],['g','Boot fits 6 bags']],gain:'A car for all three outing days'},
+  priv:{score:2.5,cost:24600,label:'Innova Crysta, same driver all 5 days',h:'Innova Crysta, same driver all 5 days',sub:'On call 8 am to 8 pm, every day',pills:[['g','Child seat for Aarav'],['g','No waiting for a cab'],['g','Boot fits 6 bags']],gain:'One driver on call all five days'} };
+const HGAIN={inn:'A small pool, and closer to the beach',seabreeze:'A 4-star, 2 minutes from the beach',caravela:'Kids pool for Aarav. Fits all six of you',grand:'5-star: kids club, pure veg restaurant, beach buggy'};
+const LAD={tr:['t3','t2','stop','non','flex'],hotel:['saver','inn','seabreeze','caravela','grand'],cab:['basic','innova','priv']};
+const trOf=()=>TR[state.tr], cabOf=()=>{const c=CAB[state.cab];return TR[state.tr].air?c:{...c,sub:c.sub.replace('Airport both ways','Station both ways').replace('Station or airport','Station')};}, direct=()=>TR[state.tr].air===2;
+const HADDR={caravela:'Varca Beach Road, Varca, Salcete, South Goa 403721',seabreeze:'Vasvaddo Beach Road, Benaulim, Salcete, South Goa 403716',palm:'4th Ward, Colva, Salcete, South Goa 403708',saver:'Near Varca Church, Varca, Salcete, South Goa 403721',inn:'Coco Lane, Sernabatim, Benaulim, South Goa 403716',grand:'Fatrade Beach Road, Varca, Salcete, South Goa 403721',baga:'Tito\'s Lane, Baga, Calangute, North Goa 403516'};
+const PLACES=[[/Old Goa/,'Old Goa churches','Basilica of Bom Jesus, Old Goa Road, Bainguinim, Goa 403402'],[/Panjim/,'Lunch, Panjim','18th June Road, Panaji, Goa 403001'],[/Colva/,'Colva beach','Colva Beach Road, Colva, Salcete, Goa 403708'],[/Margao market/,'Margao market','Municipal Market, Margao, Goa 403601'],[/Dolphin/,'Dolphin boat jetty','Colva Beach jetty, Colva, Salcete, Goa 403708'],[/Benaulim beach/,'Benaulim beach','Benaulim Beach Road, Benaulim, Goa 403716'],[/Varca beach/,'Varca beach','Varca Beach, Varca, Salcete, Goa 403721'],[/Baga beach/,'Baga beach','Baga Beach, Calangute, Bardez, Goa 403516'],[/Cabo de Rama/,'Cabo de Rama fort','Cabo de Rama Fort Road, Cola, Canacona, Goa 403702'],[/Spice farm/,'Spice farm','Ponda taluka, Goa 403401. Exact farm confirmed 24 h before'],[/Mangueshi/,'Shri Mangueshi temple','Mangeshi Village, Mardol, Ponda, Goa 403401'],[/Dudhsagar/,'Dudhsagar jeep point','Kulem (Mollem), Sanguem, Goa 403410'],[/Fort Aguada/,'Fort Aguada','Fort Aguada Road, Candolim, Bardez, Goa 403515'],[/Riverside dinner/,'Riverside dinner','Cavelossim, Salcete, Goa 403731'],[/beach restaurant/,'Beach restaurant','Benaulim Beach Road, Benaulim, Goa 403716']];
+const HUB={amd:['Ahmedabad airport (AMD)','Sardar Vallabhbhai Patel International Airport, Hansol, Ahmedabad 382475'],goi:['Goa airport, Dabolim (GOI)','Goa International Airport, Dabolim, Vasco da Gama, Goa 403801'],adi:['Ahmedabad Junction (ADI)','Kalupur, Ahmedabad 380002'],mao:['Madgaon Junction (MAO)','Station Road, Margao, Goa 403601']};
+const DEFMOOD=['light','sights','beach','nearby','light'];
+const P=(...ids)=>ids;
+function dayOpts(i){
+  const L=state.levers, spiceNow=BASE.spice-(L.spice?4800:0), T=state.temple?[['08:00','Shri Mangueshi temple, Mummy\'s ask','new']]:[];
+  const e=state.added.early;
+  return [
+   [ {id:'light',label:'Light',note:'You\'ve just landed. Nothing booked after lunch.',pace:2,delta:0,hits:[],slots:[[e?'05:50':'09:40','Fly AMD → Goa'],[e?'08:15':'12:15',e?'Reach hotel. Early check-in requested, not guaranteed':'Check in, lunch at hotel'],['13:00','Rest · Aarav naps','rest'],['17:00','Varca beach, 4 min walk. Sunset.']]},
+     {id:'dinner',label:'Beach and a good dinner',note:'Adds a sit-down dinner on the first night.',warn:'Long first day for Aarav after a flight.',pace:3,delta:4200,hits:P('aarav'),slots:[[e?'05:50':'09:40','Fly AMD → Goa'],['12:15','Check in, lunch at hotel'],['13:00','Rest · Aarav naps','rest'],['17:00','Varca beach, sunset'],['19:00','Dinner at the hotel grill. Table for 6, veg menu checked','new']]} ],
+   [ {id:'sights',label:'Sightseeing',note:'Old Goa and Panjim. About 75 min in the cab each way.',pace:3,delta:0,hits:[],slots:[['09:30','Old Goa churches. Step-free route.'],['12:00','Lunch, Panjim (veg thali)'],['13:00','Rest in the cab back · nap','rest'],['16:30','Hotel pool. Kids pool for Aarav.']]},
+     {id:'nearby',label:'Nearby only',note:'Nothing more than 25 minutes from the hotel.',pace:2,delta:-1400,hits:[],slots:[['10:00','Colva beach and Margao market, 25 min away','new'],['12:30','Lunch back at the hotel'],['13:00','Rest · nap','rest'],['16:30','Hotel pool']]},
+     {id:'light',label:'Light',note:'A hotel day. No cab.',pace:1,delta:-3800,hits:P('kavya'),warn:'Kavya may get bored.',slots:[['09:30','Pool morning. Kids pool for Aarav.','new'],['13:00','Rest · nap','rest'],['17:00','Sunset walk on Varca beach']]},
+     {id:'dinner',label:'Beach and a good dinner',note:'Beach morning, then a proper dinner out.',pace:3,delta:1800,hits:[],slots:[['09:30','Benaulim beach, 10 min away','new'],['13:00','Rest · nap','rest'],['18:30','Dinner at a beach restaurant. Veg menu checked, home by 8:30','new']]},
+     ...(state.added.aguada?[{id:'aguada',label:'Fort Aguada',note:'You added this. North Goa, 1h40 each way.',warn:'3h20 in the cab. Breaks my "no day over 90 min" rule.',pace:5,delta:2600,hits:P('aarav','ba','papa'),slots:[['08:30','Leave for North Goa','new'],['10:15','Fort Aguada. Uneven ground, some steps.','new'],['12:30','Lunch, Candolim'],['13:15','Nap in the cab back','rest'],['16:30','Hotel pool']]}]:[]) ],
+   [ {id:'beach',label:'Beach and water',note:'Dolphin boat for everyone, then Colva.',pace:4,delta:0,hits:[],slots:[['09:00','Dolphin boat, everyone. Life jackets on board, kids 3+ allowed'],['12:30','Lunch at Colva'],['13:00','Rest · nap','rest'],['16:00','Colva beach + Margao market walk']]},
+     {id:'split',label:'Split day',note:'Water sports for three, a slow morning for three. Same price.',warn:'The family is apart till lunch.',pace:2,delta:0,hits:[],slots:[['09:00','Dolphin boat + water sports: Kavya, Rohan, you'],['09:00','Mummy, Papa & Aarav: slow morning at the hotel','new'],['13:00','Rest · nap','rest'],['16:00','Colva beach (dropped the market walk)']]},
+     {id:'light',label:'Light',note:'Drops the boat. Pool and one short beach visit.',warn:'Kavya loses the water sports.',pace:1,delta:-BASE.dolphin,hits:P('kavya'),slots:[['09:30','Slow morning, pool','new'],['13:00','Rest · nap','rest'],['16:30','Colva beach for sunset']]} ],
+   [ {id:'nearby',label:'Nearby outing',note:'One easy outing and a sunset.',pace:3,delta:0,hits:[],slots:[...T,['10:00',L.spice?'Easy morning, beach shack lunch':'Spice farm, with a veg Goan lunch'],['13:30','Rest · nap','rest'],['17:00','Cabo de Rama sunset. Short flat path.']]},
+     {id:'dinner',label:'Good dinner out',note:'Same day, plus a last-night dinner.',pace:3,delta:3600,hits:[],slots:[...T,['10:00',L.spice?'Easy morning, beach shack lunch':'Spice farm, with a veg Goan lunch'],['13:30','Rest · nap','rest'],['17:00','Cabo de Rama sunset'],['19:00','Riverside dinner, Cavelossim. Table for 6, veg menu checked','new']]},
+     ...(state.added.dudh?[
+     {id:'big',label:'Dudhsagar, everyone',note:'You added this. It replaces the '+(L.spice?'shack lunch':'spice farm')+'.',warn:'3 hrs on a rough road, and no nap.',pace:5,delta:9600-spiceNow,hits:P('ba','papa','aarav'),slots:[['07:30','Leave for Dudhsagar. Jeep from Mollem.','new'],['10:30','Waterfall. Life jackets given at the pool.','new'],['13:30','Lunch on the way back. No nap today.'],['17:30','Back at the hotel, early night']]},
+     {id:'bigsplit',label:'Dudhsagar for three',note:'Rohan, Kavya and you go. Mummy, Papa and Aarav stay at the pool.',warn:'The family is apart till evening.',pace:4,delta:4800-spiceNow,hits:[],slots:[['07:30','Rohan, Kavya, you: Dudhsagar jeep trip','new'],['09:30','Mummy, Papa & Aarav: pool, lunch at the hotel','new'],['13:00','Rest · Aarav naps','rest'],['17:30','Everyone together for sunset on Varca beach']]}]:[]) ],
+   [ {id:'light',label:'Light',note:'Pack, check out, fly. Nothing else.',pace:1,delta:0,hits:[],slots:[['08:00','Slow breakfast, pack'],[L.early?'10:15':'11:15','Leave for airport'],[L.early?'11:55':'13:10','Fly home']]},
+     {id:'beach',label:'One last beach morning',note:'An hour on Varca beach before breakfast.',warn:'Tight with packing and checkout.',pace:2,delta:0,hits:P('aarav'),slots:[['07:00','Varca beach, one last walk','new'],['08:30','Breakfast, pack'],[L.early?'10:15':'11:15','Leave for airport'],[L.early?'11:55':'13:10','Fly home']]} ],
+  ][i];
+}
+const dayPick = i => { const d=dayPick0(i), h=state.hotel, bch={seabreeze:'Benaulim',inn:'Benaulim',palm:'Colva',baga:'Baga'}[h], noPool=['saver','seabreeze','baga'].includes(h), kids=['caravela','grand'].includes(h);
+  if(!bch && kids) return d;
+  const fx=t=>{ t=t.replace('Varca beach, 4 min walk','Varca beach, a short walk'); if(bch) t=t.replace(/Varca beach/g,bch+' beach'); if(!kids) t=t.replace(/ Kids pool for Aarav\./,'');
+    if(noPool) t=t.replace(/^Hotel pool\.?$/,'Easy evening at the beach').replace(/^Pool morning\.?$/,'Slow morning at the stay').replace(/^Slow morning, pool$/,'Slow morning').replace(/pool, lunch at the hotel/,'rest and lunch at the stay').replace(/stay at the pool/,'stay back and rest'); return t; };
+  return {...d,slots:d.slots.map(x=>[x[0],fx(x[1]),x[2]])}; };
+const dayPick0 = i => { const o=dayOpts(i); let d=o.find(x=>x.id===state.moods[i]) || o[0]; const t=state.tr;
+  if(direct() || (i!==0&&i!==4)) return d;
+  d={...d,slots:d.slots.map(x=>[...x])};
+  if(i===0){ d.slots=d.slots.filter(x=>!/^Check in/.test(x[1])&&!/^Reach hotel/.test(x[1])); d.slots[0]= t==='stop'?['08:20','Fly AMD → Goa via Mumbai. Land 13:05']:['11:20','Train reaches Madgaon. You left Ahmedabad 18:10 last evening'];
+    d.slots.splice(1,0,t==='stop'?['14:00','Check in, late lunch']:['12:15','Check in, lunch at hotel']); if(t==='stop') d.slots=d.slots.map(x=>/Aarav naps/.test(x[1])?['14:30','Rest · Aarav naps late today','rest']:x); }
+  else { d.slots=d.slots.filter(x=>!/airport|Fly home/.test(x[1])); d.slots.push(...(t==='stop'?[['09:45','Leave for airport'],['11:40','Fly home via Mumbai. Land 16:25']]:[['13:45','Leave for Madgaon station, 25 min'],['14:40','Train home. Reach Ahmedabad 07:50 next morning']])); }
+  return d; };
+const comboTotal = (tr,h,cab) => TR[tr].cost+CAB[cab].cost+BASE.dolphin+BASE.spice+HOTELS[h].nightly*4+surcharge();
+function pickPlan(){
+  let best=null, cheap=null;
+  LAD.tr.forEach(tr=>LAD.hotel.forEach(h=>LAD.cab.forEach(cab=>{ const c=comboTotal(tr,h,cab), sc=TR[tr].score+HOTELS[h].score+CAB[cab].score, o={tr,h,cab,c,sc};
+    if(!cheap||c<cheap.c) cheap=o; if(c<=BUDGET && (!best||sc>best.sc||(sc===best.sc&&c<best.c))) best=o; })));
+  const pk=best||cheap; state.tr=pk.tr; state.hotel=pk.h; state.cab=pk.cab; state.levers={}; state.moods={}; state.added={}; state.fitted=!!best;
+}
+function upsells(){
+  const out=[], t=total();
+  [['tr',state.tr],['hotel',state.hotel],['cab',state.cab]].forEach(([k,cur])=>{ const L=LAD[k], i=L.indexOf(cur); if(i<0||i>=L.length-1) return; const nx=L[i+1];
+    const d = k==='tr'?TR[nx].cost-TR[cur].cost : k==='cab'?CAB[nx].cost-CAB[cur].cost : (HOTELS[nx].nightly-HOTELS[cur].nightly)*4;
+    out.push({k,id:nx,d,gain:k==='tr'?TR[nx].gain:k==='cab'?CAB[nx].gain:HGAIN[nx],over:Math.max(0,t+d-BUDGET)}); });
+  return out.filter(u=>u.d<=20000).sort((a,b)=>a.d-b.d);
+}
+const extras = () => [0,1,2,3,4].reduce((a,i)=>a+dayPick(i).delta,0);
+const paceBar = n => [1,2,3,4,5].map(k=>`<i class="${k<=n?'f':''}"></i>`).join('');
+const sgn = n => n===0?'Same price':(n>0?'+':'−')+fmt(Math.abs(n));
+const state = {
+  hotel:'caravela', tr:'non', cab:'innova', levers:{}, locked:{}, day3Light:false, shared:false,
+  temple:false, fail:false, step:0, ages:{}, custom:[], start:DEF_START, moods:{}, added:{},
+};
+const total = () => {
+  let t = TR[state.tr].cost + CAB[state.cab].cost + BASE.dolphin + BASE.spice + HOTELS[state.hotel].nightly*4 + surcharge();
+  LEVERS.forEach(l => { if(state.levers[l.id]) t -= l.save; });
+  if(state.bookFix==='villa') t += 2400;
+  if(state.added.early) t -= 2100;
+  return t + extras();
+};
+
+/* =========================================================
+   App
+   ========================================================= */
+const App = {
+  cur:'s-home',
+  timers:[],
+  go(id){
+    document.querySelectorAll('.screen').forEach(s => s.classList.toggle('hidden', s.id!==id));
+    this.cur=id; this.closeSheet(true);
+  },
+  clearTimers(){ this.timers.forEach(clearTimeout); this.timers=[]; this.runId=(this.runId||0)+1; },
+  restart(){
+    this.clearTimers();
+    BUDGET=150000; Object.assign(state,{moods:{},added:{},start:DEF_START,nNeeds:null,ages:{},custom:[],hotel:'caravela',tr:'non',cab:'innova',levers:{},locked:{},day3Light:false,shared:false,temple:false,fail:false,step:0,bookFix:null});
+    $('homeInput').value=''; $('chat').innerHTML='';
+    this.go('s-home');
+  },
+  fillExample(i){
+    const ex=['Plan 5 days in Goa for 6 of us. Me, my husband Rohan, our 4 year old Aarav, Mummy-Papa, and my niece Kavya.','Somewhere cool in May, 4 nights, kids\' summer vacation'];
+    $('homeInput').value = ex[i]; $('homeInput').focus();
+  },
+
+  /* ---------------- conversation ---------------- */
+  async start(){
+    let txt = $('homeInput').value.trim();
+    if(!txt){ this.fillExample(0); txt=$('homeInput').value; }
+    if(!/goa/i.test(txt)){
+      // Simulated prototype: only the Goa journey is built
+      txt = txt + '';
+    }
+    this.clearTimers(); const run=this.runId;
+    $('chat').innerHTML='';
+    this.go('s-chat');
+    this.me(txt);
+    if(!/goa/i.test(txt)){
+      await this.think(900); if(run!==this.runId) return;
+      this.ai(`<p>Good brief. For this prototype I've only built one journey, so let's use the Goa family trip to show how I work.</p>`);
+      await wait(700); if(run!==this.runId) return;
+      this.me('Plan 5 days in Goa for 6 of us. Me, my husband Rohan, our 4 year old Aarav, Mummy-Papa, and my niece Kavya.');
+    }
+    await this.think(1200); if(run!==this.runId) return;
+    this.askRoster();
+  },
+  me(t){ const d=document.createElement('div'); d.className='msg me'; d.textContent=t; $('chat').appendChild(d); this.scrollChat(); },
+  ai(html){ const d=document.createElement('div'); d.className='msg ai'; d.innerHTML=`<div class="ai-name"><span class="av">H</span>Humsafar</div><div class="bubble">${html}</div>`; $('chat').appendChild(d); this.scrollChat(); return d; },
+  async think(ms){ const d=document.createElement('div'); d.className='msg ai'; d.innerHTML='<div class="typing"><i></i><i></i><i></i></div>'; $('chat').appendChild(d); this.scrollChat(); await wait(ms); d.remove(); },
+  scrollChat(){ requestAnimationFrame(()=>{ const s=$('chatScroll'); s.scrollTop=s.scrollHeight; }); },
+
+  askRoster(){
+    const roster = PEOPLE.map(p=>`<div class="who" data-p="${p.id}"><div class="face">${p.ask?'🙂':p.face}</div><b>${p.name}</b><small class="ag" style="${p.ask?'color:#B26A00;font-weight:600':''}">${p.ask?'Age?':(p.age||(p.rel==='planner'?'planner':'adult'))}</small><span class="need"></span></div>`).join('');
+    const q=(id,label,opts)=>`<div style="margin-top:12px"><div style="font-size:13px;font-weight:600">${label}</div><div class="chips" style="margin-top:6px" data-q="${id}">${opts.map(o=>`<button class="chip" onclick="App.setAge('${id}','${o}',this)">${o}</button>`).join('')}</div></div>`;
+    this.ai(`<p>I found all six names in your message. Here's who I've understood:</p>
+      <div class="roster">${roster}</div>
+      <p style="margin-top:12px">I need three ages. I won't guess them, because they change fares and how packed each day can be.</p>
+      ${q('ba','Mummy',['Under 60','60–70','70+'])}
+      ${q('papa','Papa',['Under 60','60–70','70+'])}
+      ${q('kavya','Kavya',['Under 12','12–17'])}
+      <p class="why">60+ gets senior fares and a gentler pace. Under 12 gets child fares.</p>
+      <div class="confirm-row"><button class="btn sm" id="rosterOk" disabled onclick="App.askNeeds(this)">That's everyone</button></div>`);
+  },
+  setAge(id,val,el){
+    el.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('on')); el.classList.add('on');
+    state.ages[id]=val;
+    const P=PEOPLE.find(x=>x.id===id), old=/60–70|70\+/.test(val);
+    P.face = id==='ba'?(old?'👵🏽':'👩🏽') : id==='papa'?(old?'👴🏽':'👨🏽') : '👧🏽';
+    document.querySelector(`.who[data-p="${id}"] .face`).textContent=P.face;
+    const card=document.querySelector(`.who[data-p="${id}"] .ag`);
+    card.textContent=val.replace('Under ','<').replace('–','–')+(/\d$/.test(val)?' yrs':''); card.style.color=''; card.style.fontWeight='';
+    card.parentElement.classList.remove('added'); void card.parentElement.offsetWidth; card.parentElement.classList.add('added');
+    if(['ba','papa','kavya'].every(k=>state.ages[k])) $('rosterOk').disabled=false;
+  },
+
+  async askNeeds(btn){
+    btn.disabled=true; btn.textContent='✓ Confirmed';
+    document.querySelectorAll('[data-q] .chip').forEach(c=>c.disabled=true);
+    this.me(`Mummy ${state.ages.ba}, Papa ${state.ages.papa}, Kavya ${state.ages.kavya}`);
+    await this.think(900);
+    const opts=[
+      ['ba','Mummy can\'t do stairs',false],
+      ['aarav','Aarav naps 1–3 pm',false],
+      ['papa','Pure veg food',false],
+      ['flight','No flights before 8 am',false],
+      ['kavya','Kavya wants water sports',false],
+      ['jain','Jain food',false],
+      ['wheel','Wheelchair assistance',false],
+    ];
+    this.ai(`<p class="qhead">What should I plan around?</p>
+      <p style="font-size:13px;color:#4D4D4D;margin-top:4px">I don't know your family's needs, so I haven't ticked anything. These are things families with a small kid and grandparents often mention. Tap what's true, or add your own.</p>
+      <div class="chips" id="needChips">${opts.map(o=>`<button class="chip ${o[2]?'on':''}" data-k="${o[0]}" onclick="this.classList.toggle('on')">${o[1]}</button>`).join('')}<button class="chip add" id="addNeed" onclick="App.addNeed()">+ Add your own</button></div>
+      <p class="why">These decide which hotels and flights I even look at. Price comes after.</p>
+      <div class="confirm-row"><button class="btn sm" onclick="App.askDates(this)">Done</button></div>`);
+    state.step='needs';
+  },
+
+  addNeed(){
+    const add=$('addNeed'); if(!add||add.style.display==='none') return;
+    add.style.display='none';
+    const w=document.createElement('span'); w.className='chip-in'; w.id='needIn';
+    w.innerHTML='<input maxlength="40" placeholder="e.g. Papa needs low-sugar meals"><button aria-label="Add">✓</button>';
+    add.before(w);
+    const inp=w.querySelector('input');
+    const commit=()=>{ const v=inp.value.trim(); w.remove(); add.style.display=''; if(v) this.pushNeed(v); };
+    inp.onkeydown=e=>{ if(e.key==='Enter') commit(); if(e.key==='Escape'){ w.remove(); add.style.display=''; } };
+    w.querySelector('button').onclick=commit;
+    inp.focus(); this.scrollChat();
+  },
+  pushNeed(v){
+    const add=$('addNeed'); if(!add) return;
+    const c=document.createElement('button'); c.className='chip on mine'; c.dataset.k='custom'; c.textContent=v; c.title='Tap to remove';
+    c.onclick=()=>c.remove();
+    add.before(c); this.scrollChat();
+  },
+
+  async askDates(btn){
+    btn.disabled=true; state.step=0;
+    const ni=$('needIn'); if(ni){ const v=ni.querySelector('input').value.trim(); ni.remove(); if(v) this.pushNeed(v); }
+    const addBtn=$('addNeed'); if(addBtn) addBtn.remove();
+    state.custom=[...document.querySelectorAll('#needChips .chip.mine')].map(c=>c.textContent);
+    const on=[...document.querySelectorAll('#needChips .chip.on')].map(c=>c.textContent);
+    document.querySelectorAll('#needChips .chip').forEach(c=>c.disabled=true);
+    state.nNeeds=on.length; state.noEarly=!!document.querySelector('#needChips .chip.on[data-k="flight"]');
+    this.me(on.join(' · ') || 'Nothing special');
+    if(state.custom.length){ await this.think(900); const esc=t=>t.replace(/</g,'&lt;'); this.ai(`<p>Noted: ${state.custom.map(c=>'"'+esc(c)+'"').join(', ')}.</p><p>I can't check ${state.custom.length>1?'these':'this'} against hotel or flight data yet. So I'll keep ${state.custom.length>1?'them':'it'} on your plan as a note and send ${state.custom.length>1?'them':'it'} to the hotel as a request before you book.</p><p class="why">I'd rather tell you what I can't verify than pretend I planned around it.</p>`); }
+    if(!on.length){ await this.think(800); this.ai(`<p>Noted, nothing special. This demo's plan was built with stairs, naps and veg food in mind, so you'll still see those in it. In the real product the plan would only follow what you tell me.</p>`); }
+    // reflect needs in roster
+    const map={ba:'No stairs',aarav:'Naps 1–3 pm',papa:'Pure veg',kavya:'Wants water sports'};
+    document.querySelectorAll('#needChips .chip').forEach(c=>{
+      const k=c.dataset.k; const w=document.querySelector(`.who[data-p="${k}"] .need`);
+      if(w && c.classList.contains('on')){ w.textContent=map[k]; w.parentElement.classList.add('added'); }
+    });
+    await this.think(1000);
+    this.ai(`<p class="qhead">When are you thinking?</p>
+      <div class="chips">
+        <button class="chip" onclick="App.setDates(this,2026,11,21)">21–25 Dec <span class="pill g">₹ lower</span></button>
+        <button class="chip" onclick="App.setDates(this,2026,11,26)">26–30 Dec <span class="pill r">peak</span></button>
+        <button class="chip" onclick="App.openCal(this)">📅 Pick dates</button>
+      </div>
+      <p class="why">You said 5 days. Fares and room rates jump in Christmas week, so I've shown one option on each side of it.</p>`);
+  },
+
+  setDates(chip,y,m,d){ state.start=new Date(y,m,d); this.askBudget(chip, rangeLong()); },
+  openCal(chip){
+    let sel = new Date(state.start);
+    const months=[[2026,10],[2026,11],[2027,0]];
+    const today=new Date(2026,10,12);
+    const render=()=>{
+      const a=sel.getTime(), b=dAt(4,sel).getTime(), sur=surcharge(sel);
+      const grid=([y,m])=>{
+        const first=new Date(y,m,1), n=new Date(y,m+1,0).getDate();
+        let h=`<div class="cal-m">${['January','February','March','April','May','June','July','August','September','October','November','December'][m]} ${y}</div><div class="cal-g">${['S','M','T','W','T','F','S'].map(x=>`<span class="dw">${x}</span>`).join('')}`;
+        for(let i=0;i<first.getDay();i++) h+='<span></span>';
+        for(let d=1;d<=n;d++){
+          const dt=new Date(y,m,d), t=dt.getTime(), past=dt<=today, f=dayFare(dt);
+          const cls = t===a?'s':t===b?'e':(t>a&&t<b)?'in':'';
+          h+= past ? `<span class="cal-d" style="color:#C8C8C8">${d}</span>`
+                   : `<button class="cal-d ${cls}" onclick="App._calPick(${y},${m},${d})">${d}<small class="${f>=11?'hi':f<9.5?'lo':'mid'}">${f.toFixed(1)}k</small></button>`;
+        }
+        return h+'</div>';
+      };
+      const keep=$('calBody')?$('calBody').scrollTop:null;
+      this.sheet(`<div class="sh-h"><h3>Pick your dates</h3><p>You said 5 days, so tap the day you want to leave and I'll mark all five.</p></div>
+        <div class="sh-b" id="calBody"><div class="cal-leg"><span>Under each date: return fare per person if you leave that day</span><span style="color:#0B7A52">● lowest</span><span style="color:#B26A00">● one peak flight</span><span style="color:#D93025">● both peak</span></div>${months.map(grid).join('')}</div>
+        <div class="sh-f"><div style="flex:1"><b style="font-size:15px">${rangeLong(sel)}</b><div style="font-size:12px;color:${sur?'#D93025':'#0B7A52'}">4 nights · ${sur?'about '+fmt(sur)+' more for six than '+rangeShort(DEF_START):'no peak-season extra'}</div></div>
+        <button class="btn" onclick="App._calUse()">Use these dates</button></div>`);
+      const cb=$('calBody'); if(keep!==null) cb.scrollTop=keep; else { const s=cb.querySelector('.cal-d.s'); if(s) cb.scrollTop=Math.max(0,s.offsetTop-cb.offsetTop-120); }
+    };
+    this._calPick=(y,m,d)=>{ sel=new Date(y,m,d); render(); };
+    this._calUse=()=>{ state.start=sel; this.closeSheet(); this.askBudget(chip, rangeLong()); };
+    render();
+  },
+
+  async askBudget(chip, label){
+    chip.parentElement.querySelectorAll('.chip').forEach(c=>c.disabled=true); chip.classList.add('on');
+    this.me(label);
+    await this.think(900);
+    if(surcharge()>0) { this.ai(`<p>Heads up: ${peakNights()?peakNights()+' of your 4 nights fall':'your flights fall'} in Goa's Christmas to New Year peak. That adds about <b>${fmt(surcharge())}</b> for the six of you compared with ${rangeShort(DEF_START)}.</p><p class="why">I'll plan for your dates. If the total goes over budget, moving the dates will be one of the options I show.</p>`); await this.think(700); }
+    this.ai(`<p class="qhead">What's the all-in budget for the six of you?</p>
+      <div class="budget-box">
+        <div class="budget-val" id="bv">₹1,50,000 <small>flights + stay + outings</small></div>
+        <input type="range" id="budIn" min="80000" max="250000" step="5000" value="150000" oninput="document.getElementById('bv').innerHTML='₹'+(+this.value).toLocaleString('en-IN')+' <small>flights + stay + outings</small>'">
+        <div class="range-l"><span>₹80k</span><span>₹2.5L</span></div>
+      </div>
+      <p class="why">I'll try to stay under it. If I can't, I'll show you exactly what it costs to get there, and who it affects.</p>
+      <div class="confirm-row"><button class="btn sm" onclick="App.toPlanning(this)">Plan my trip</button></div>`);
+  },
+
+  async freeText(){
+    const v=$('chatInput').value.trim(); if(!v) return;
+    if(state.step==='needs' && $('addNeed')){ $('chatInput').value=''; this.pushNeed(v.slice(0,40)); return; }
+    $('chatInput').value=''; this.me(v);
+    await this.think(900);
+    this.ai(`<p>Got it, I've noted "${v.replace(/</g,'&lt;')}". In this prototype the conversation is scripted, so please use the options above to keep going.</p>`);
+  },
+
+  /* ---------------- planning ---------------- */
+  async toPlanning(btn){
+    if(btn){ btn.disabled=true; const bi=$('budIn'); if(bi){ BUDGET=+bi.value; bi.disabled=true; bi.removeAttribute('id'); } this.me(`Plan my trip, within ${fmt(BUDGET)}`); }
+    this.clearTimers(); const run=this.runId;
+    this.go('s-plan-load');
+    const steps=[
+      ['Reading your family',`6 travellers · ${state.nNeeds==null?'your needs':state.nNeeds+' need'+(state.nNeeds===1?'':'s')} · ${rangeShort()} · ${lakh(BUDGET)} budget`, null],
+      ['Flights and trains from Ahmedabad','Checked <span class="count" data-n="38">0</span> options · '+(state.noEarly===false?'kept the 6 non-stop ones':'dropped 11 that leave before 8 am'), 38],
+      ['Stays in South Goa','Checked <span class="count" data-n="214">0</span> · only 9 have a ground-floor room and a kids pool', 214],
+      ['Days that fit naps','Keeping 1–3 pm free every day, and no day with over 90 min in a cab', null],
+      ['Checking the whole plan','Making sure every piece works for all 6 of you', null],
+    ];
+    $('loadBody').innerHTML=`<div class="plan-load">
+        <h2>Working on it</h2><p class="muted" style="font-size:13px">Takes under a minute. Tap Stop below if you want to change an answer.</p>
+        <div class="steps">${steps.map((s,i)=>`<div class="step" id="st${i}"><div class="dot"></div><div><b>${s[0]}</b><span>${s[1]}</span></div></div>`).join('')}</div>
+        <div class="skel"><div class="sk"></div><div class="sk"></div><div class="sk" style="height:120px"></div></div>
+        <button class="btn ghost sm" style="margin-top:6px" onclick="App.cancelPlanning()">Stop planning</button>
+      </div>`;
+    for(let i=0;i<steps.length;i++){
+      if(run!==this.runId) return;
+      const el=$('st'+i); el.classList.add('on');
+      const c=el.querySelector('.count');
+      if(c){ const n=+c.dataset.n; for(let k=0;k<=12;k++){ if(run!==this.runId) return; c.textContent=Math.round(n*k/12); await wait(55);} }
+      await wait(i===0?500:650);
+      if(run!==this.runId) return;
+      if(state.fail && i===2){ return this.planFail(); }
+      el.classList.remove('on'); el.classList.add('done'); el.querySelector('.dot').textContent='✓';
+    }
+    await wait(350); if(run!==this.runId) return;
+    pickPlan(); this.renderPlan(); this.go('s-plan');
+    $('planScroll').scrollTop=0;
+  },
+  planFail(){
+    $('loadBody').innerHTML=`<div class="card err">
+      <div class="ic">📶</div>
+      <h3>Lost connection while checking hotels</h3>
+      <p>Your answers are saved and flights are already shortlisted. I'll pick up from hotels, not from scratch.</p>
+      <button class="btn" onclick="state.fail=false;App.toPlanning()">Try again</button>
+      <div style="margin-top:12px"><button class="lnk" onclick="App.go('s-chat')">Edit my answers</button></div>
+    </div>`;
+  },
+  cancelPlanning(){
+    this.clearTimers();
+    this.go('s-chat');
+    this.ai(`<p>Stopped. Nothing was booked or held. Change anything above, or tap below when you're ready.</p><div class="confirm-row"><button class="btn sm" onclick="App.toPlanning(this)">Plan again</button></div>`);
+  },
+
+  /* ---------------- plan view ---------------- */
+  renderPlan(){
+    const t=total(), over=t-BUDGET, h=HOTELS[state.hotel];
+    const pct=Math.min(100, t/ (BUDGET*1.15) *100), cap=BUDGET/(BUDGET*1.15)*100;
+    const fitPeople = id => PEOPLE.map(p=>`<span class="pp">${p.face} ${h.fit[p.id]?'✓':'<span style="color:#D93025">✕</span>'}</span>`).join('');
+    const lock = k => `<button class="lock ${state.locked[k]?'on':''}" onclick="App.toggleLock('${k}')">${state.locked[k]?'🔒 Locked':'🔓 Lock'}</button>`;
+    const leverOn=id=>!!state.levers[id];
+    $('planScroll').innerHTML=`
+    <div class="trip-head">
+      <h2>Goa, with everyone</h2>
+      <div class="trip-meta">${rangeLong()} · 4 nights · Ahmedabad ⇄ Goa</div>
+      <div class="people">${PEOPLE.map(p=>`<span class="pp">${p.face} ${p.name}</span>`).join('')}</div>
+      <div class="meter">
+        <div class="meter-top"><span>Total for 6 <span class="muted">· ${pp(t)} per person</span></span><span><b id="mt">${fmt(t)}</b> <span class="muted">/ ${fmt(BUDGET)}</span></span></div>
+        <div class="bar"><div class="fill" style="width:${pct}%;background:${over>0?'#D93025':'#11A670'}"></div><div class="cap" style="left:${cap}%"></div></div>
+      </div>
+    </div>
+    ${over>0?`<div class="alert r"><span>⚠️</span><div class="ac"><b>${fmt(over)} over your budget</b>I couldn't fit everything you asked for in ${fmt(BUDGET)} without breaking Mummy's or Aarav's needs. Here are ${levers().length} ways to bring it down, and what each one costs you.<div style="margin-top:8px"><button class="btn sm" onclick="App.openFixes()">See the ${levers().length} options</button></div></div></div>`
+      :`<div class="alert g"><span>✓</span><div class="ac"><b>${fmt(-over)} under budget</b>${Object.keys(state.levers).length?'After the changes you picked. Nothing that matters for Mummy or Aarav was cut.':(state.fitted?`This is the most comfortable plan I could fit in ${fmt(BUDGET)}. Nothing here needs more money.`:'Everything fits.')}</div></div>`}
+    ${upsells().length?`<div class="card notes"><div class="k" style="font-size:11px;color:#6B6B6B;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px">If you can stretch a little</div>
+      ${upsells().slice(0,3).map(u=>`<div class="nrow" style="align-items:center;padding:8px 0;border-bottom:1px solid #F0F0F0"><div style="flex:1"><b style="font-size:13.5px">+${fmt(u.d)}</b> · ${u.gain}<br>${u.over?`<span class="pill a">${fmt(u.over)} over your budget</span>`:'<span class="pill g">Still within budget</span>'}</div><button class="btn sm ghost" onclick="App.applyPick('${u.k}','${u.id}')">Add</button></div>`).join('')}
+      <div style="font-size:12px;color:#6B6B6B;margin-top:8px">Optional. The plan above is complete without these.</div></div>`:''}
+
+    ${state.custom.length?`<div class="card notes"><div class="k" style="font-size:11px;color:#6B6B6B;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Your own notes</div>${state.custom.map(c=>`<div class="nrow"><span>📝</span><div style="flex:1">${c.replace(/</g,'&lt;')}</div><span class="pill a">Hotel request · not verified</span></div>`).join('')}<div style="font-size:12px;color:#6B6B6B;margin-top:6px">I couldn't check these against listings. The hotel gets them as a request, and I'll show you their reply before you pay.</div></div>`:''}
+
+    <div class="askbar card" onclick="App.openAsk()"><span class="av">H</span>Ask Humsafar to change anything. "Make Day 3 lighter"</div>
+
+    <div class="sec"><div class="sec-h"><h3>Getting there</h3><span class="pill g">${trOf().air?'Dabolim, not Mopa':'Madgaon, 25 min from hotel'}</span></div>
+      <div class="card item" id="it-flight">
+        <div class="item-top"><div><div class="k">${trOf().k}</div><h4>${state.added.early?'AMD 05:50 → GOI 07:25':trOf().h}</h4><div class="sub">${trOf().sub?trOf().sub+' ':''}Return ${dLong(dAt(4))} · ${direct()?(leverOn('early')?'11:55 → 13:30':'13:10 → 14:45')+' · non-stop':trOf().ret}</div></div>
+        <div class="price">${fmt(flightsNow()-(leverOn('early')?5400:0))}<small>return, 6 people</small></div></div>
+        <div class="fit">${direct()?(state.added.early?'<span class="pill a">3:30 am start · your pick</span>':'<span class="pill g">No 6 am start for Mummy</span>')+'<span class="pill g">Lands before lunch</span>'+(state.tr==='flex'?'<span class="pill g">Extra legroom, meals</span>':''):trOf().pills.map(t=>`<span class="pill ${t[0]}">${t[1]}</span>`).join('')}<span class="pill n">${trOf().air?'Free cancel till '+dShort(dAt(-7)):trOf().cxl}</span>${flySur()&&trOf().air?'<span class="pill r">Peak fare</span>':''}</div>
+        <div class="reason" id="r-flight"><ul>${direct()?`<li>There's a <b>₹2,100 cheaper 05:50 flight</b>. I skipped it because you'd leave home around 3:30 am with Mummy and Aarav.</li>
+          <li>I chose <b>Dabolim (GOI), not Mopa</b>. Mopa is about 2 hours from your South Goa hotel, Dabolim is about 35 minutes.</li>
+          <li>Seats 12A–F, together. Aarav sits by the window with you.</li>`:trOf().why.map(w=>`<li>${w}</li>`).join('')}</ul>
+          <div class="src">Simulated fares and timings. In production: live fare, seat and berth APIs.</div></div>
+        <div class="item-act"><button onclick="App.why('flight')">Why this?</button><button onclick="App.openPick('tr')">Swap</button>${lock('flight')}</div>
+      </div>
+    </div>
+
+    <div class="sec"><div class="sec-h"><h3>Stay · 4 nights</h3></div>
+      ${surcharge()?'':'<div class="deal">↓ Room rates for your dates dropped 8% this week</div>'}
+      <div class="card item" id="it-hotel">
+        <div class="item-top"><div><div class="k">${h.area}</div><h4>${h.name}</h4><div class="sub">${h.rooms}</div><div class="sub" style="margin-top:6px">${rate(h)}</div></div>
+        <div class="price">${fmt(h.nightly*4+staySur())}<small>${staySur()?peakNights()+' peak night'+(peakNights()>1?'s':'')+' incl.':fmt(h.nightly)+'/night'}</small></div></div>
+        <div class="fit">${h.tags.map(t=>`<span class="pill ${t[0]}">${t[1]}</span>`).join('')}</div>
+        <div class="fit" style="margin-top:8px">${fitPeople()}</div>
+        <div class="reason" id="r-hotel"><ul>${h.why.map(w=>`<li>${w}</li>`).join('')}</ul><div class="src">Signals from reviews and the property's facility list. Hotel is fictional.</div></div>
+        <div class="item-act"><button onclick="App.why('hotel')">Why this?</button><button onclick="App.openSwap()">Swap</button>${lock('hotel')}</div>
+      </div>
+      <div class="card item" id="it-cab">
+        <div class="item-top"><div><div class="k">Getting around</div><h4>${cabOf().h}</h4><div class="sub">${cabOf().sub}</div></div>
+        <div class="price">${fmt(CAB[state.cab].cost-(leverOn('shuttle')?3800:0))}<small>${leverOn('shuttle')?'one day by shuttle':'for the trip'}</small></div></div>
+        <div class="fit">${cabOf().pills.map(t=>`<span class="pill ${t[0]}">${t[1]}</span>`).join('')}</div>
+        <div class="item-act"><button onclick="App.openPick('cab')">Swap</button></div>
+      </div>
+    </div>
+
+    <div class="sec"><div class="sec-h"><h3>Days</h3><span class="muted" style="font-size:12px">Tap a day to change how it feels</span></div>
+      ${this.week()}
+      ${this.days()}
+    </div>
+
+    <div class="sec"><div class="sec-h"><h3>What I left out, and why</h3></div>
+      <div class="card skipped">${this.leftOut()}</div>
+      <p class="muted" style="font-size:12px;margin:-2px 2px 0">These are my calls, not rules. Add any of them back and I'll show what changes first.</p>
+    </div>
+    <div style="height:24px"></div>`;
+    $('botTotal').textContent=fmt(t);
+    $('botSub').textContent= over>0 ? `${fmt(over)} over budget · ${pp(t)} pp` : `${pp(t)} per person · for 6, all-in`;
+    $('botSub').style.color = over>0 ? '#D93025' : '';
+  },
+
+  days(){
+    return [0,1,2,3,4].map(i=>{ const d=dayPick(i), dt=dAt(i), chg=d.id!==DEFMOOD[i];
+      return `<div class="card day" id="day${i+1}"><div class="dn"><small>${WD[dt.getDay()]}</small><b>${dt.getDate()}</b><small>Day ${i+1}</small></div>
+      <div class="dc"><div class="dmood"><b>${d.label}${chg?' <span class="pill a">your pick</span>':''}</b><button onclick="App.openMood(${i})">Change</button></div>
+      <div class="pace">Pace ${paceBar(d.pace)} ${d.pace>=4?'<span style="color:#B26A00">· full day</span>':''}</div>
+      ${d.slots.map(s=>`<div class="slot ${s[2]||''}"><span class="tm">${s[0]}</span><span>${s[1]}</span></div>`).join('')}</div></div>`; }).join('');
+  },
+  week(){
+    return `<div class="week">${[0,1,2,3,4].map(i=>{ const d=dayPick(i), dt=dAt(i); return `<button class="wk ${d.id!==DEFMOOD[i]?'chg':''}" onclick="App.openMood(${i})"><small>Day ${i+1} · ${WD[dt.getDay()]} ${dt.getDate()}</small><b>${d.label}</b><span class="pace">${paceBar(d.pace)}</span></button>`; }).join('')}</div>`;
+  },
+  openMood(i){
+    const cur=dayPick(i), dt=dAt(i);
+    this.sheet(`<div class="sh-h"><h3>How should Day ${i+1} feel?</h3><p>${WD[dt.getDay()]} ${dShort(dt)}. Only this day changes. Flights, stay and the other days stay as they are.</p></div>
+      <div class="sh-b">${dayOpts(i).map(o=>{ const d=o.delta-cur.delta; return `<button class="lever ${o.id===cur.id?'on':''}" onclick="App.setMood(${i},'${o.id}')"><span class="cb">${o.id===cur.id?'✓':''}</span>
+        <span class="lt"><b>${o.label}${o.id===DEFMOOD[i]?' <span class="pill g">My pick</span>':''}</b><span>${o.note}</span>
+        <span class="pace" style="margin-top:6px">Pace ${paceBar(o.pace)}</span>
+        ${o.warn||o.hits.length?`<span class="who-hit">${o.hits.map(h=>{const p=PEOPLE.find(x=>x.id===h);return `<span class="pill a">${p.face} ${p.name}</span>`}).join('')}${o.warn?`<span class="pill a">${o.warn}</span>`:''}</span>`:''}</span>
+        <span class="save" style="color:${d>0?'#B26A00':d<0?'#11A670':'#6B6B6B'};font-size:13px">${o.id===cur.id?'Current':sgn(d)}</span></button>`; }).join('')}</div>`);
+  },
+  setMood(i,id){
+    const prev=state.moods[i], was=dayPick(i); if(was.id===id){ this.closeSheet(); return; }
+    state.moods[i]=id; const now=dayPick(i), d=now.delta-was.delta;
+    this.closeSheet(); this.renderPlanKeep(); this.animTotal();
+    setTimeout(()=>this.flash('day'+(i+1)),250);
+    this.toast(`Day ${i+1} is now "${now.label}". ${sgn(d)}.`, ()=>{ state.moods[i]=prev; this.renderPlanKeep(); });
+  },
+
+  /* ---------------- things I left out ---------------- */
+  leftOut(){
+    const R=[
+      {id:'early',ic:'✈︎',t:'05:50 IndiGo flight',why:'3:30 am start for a 4 year old and the grandparents',sv:'−₹2,100',act:'Take this flight'},
+      {id:'north',ic:'🏝',t:'Hotels in Baga and Calangute',why:'Reviews flag noise till 1 am. Bad for Aarav\'s sleep.',sv:'−₹4–6k',act:'Show me one anyway'},
+      {id:'dudh',ic:'🚙',t:'Dudhsagar waterfall jeep trip',why:'3 hrs on a rough road. Too long for a 4 year old and the grandparents.',sv:'−₹9,600',act:'Add it anyway'},
+      {id:'aguada',ic:'🏰',t:'Fort Aguada',why:'North Goa, 1h40 each way from your hotel',sv:'—',act:'Add it anyway'} ];
+    return R.filter(r=>r.id!=='early'||direct()).map(r=>`<div class="row"><span>${r.ic}</span><div style="flex:1">${r.t}<br><span class="muted" style="font-size:12px">${r.why}</span>
+      <div class="act">${state.added[r.id]?`<span class="pill a">Added by you</span><button onclick="App.unAdd('${r.id}')">Remove</button>`:`<button onclick="App.addBack('${r.id}')">${r.act}</button>`}</div></div><span class="sv">${r.sv}</span></div>`).join('');
+  },
+  addBack(id){
+    const who=ids=>ids.map(h=>{const p=PEOPLE.find(x=>x.id===h);return `<span class="pill a">${p.face} ${p.name}</span>`}).join('');
+    const spiceNow=BASE.spice-(state.levers.spice?4800:0), sp=state.levers.spice?'shack lunch':'spice farm';
+    const C={
+      early:{h:'Take the 05:50 flight?',p:'It is your call. Here is what changes.',rows:[['You save','₹2,100 for six'],['You leave home','around 3:30 am'],['Day 1','You reach the hotel by 8:15. The room may not be ready till noon.']],hits:['aarav','ba','papa'],btns:[['Take the 05:50','early']]},
+      north:{h:'See a Baga stay anyway?',p:'I will add one to the swap list so you can compare it side by side. Nothing changes until you swap.',rows:[['You save','about ₹5,600 over 4 nights'],['Airport','1h40 from Dabolim, not 35 min'],['Nights','Reviews mention music till 1 am']],hits:['aarav','ba','papa'],btns:[['Show it in the swap list','north']]},
+      dudh:{h:'Add Dudhsagar on Day 4?',p:'It takes the whole morning, so it replaces the '+sp+' ('+fmt(spiceNow)+'). I can do it two ways.',rows:[['Everyone goes',sgn(9600-spiceNow)+' · jeep for 6 · no nap that day'],['Three go, three stay',sgn(4800-spiceNow)+' · Mummy, Papa and Aarav stay at the pool']],hits:['ba','papa','aarav'],btns:[['Three go, three stay','dudh:bigsplit'],['Everyone goes','dudh:big']]},
+      aguada:{h:'Add Fort Aguada on Day 2?',p:'It replaces Old Goa that day.',rows:[['Cost','+₹2,600 for the longer cab'],['Time in the cab','3h20, against my 90 minute limit'],['Aarav\'s nap','in the cab on the way back']],hits:['aarav','ba','papa'],btns:[['Add it to Day 2','aguada']]} }[id];
+    this.sheet(`<div class="sh-h"><h3>${C.h}</h3><p>${C.p}</p></div><div class="sh-b">${C.rows.map(r=>`<div class="rv-row"><span>${r[0]}</span><span style="text-align:right;font-weight:500;max-width:62%">${r[1]}</span></div>`).join('')}
+      <div style="font-size:12px;color:#6B6B6B;margin:12px 0 6px">Harder for</div><div class="who-hit" style="display:flex;gap:5px;flex-wrap:wrap">${who(C.hits)}</div></div>
+      <div class="sh-f" style="flex-wrap:wrap"><button class="btn ghost" style="flex:1" onclick="App.closeSheet()">Leave it out</button>${C.btns.map((b,k)=>`<button class="btn" style="flex:1;${k?'background:#1A1A1A':''}" onclick="App.doAdd('${b[1]}')">${b[0]}</button>`).join('')}</div>`);
+  },
+  doAdd(key){
+    const [id,opt]=key.split(':'), snap=JSON.stringify({a:state.added,m:state.moods});
+    state.added[id]=true; this.closeSheet();
+    const undo=()=>{ const o=JSON.parse(snap); state.added=o.a; state.moods=o.m; this.renderPlanKeep(); };
+    if(id==='north'){ this.renderPlanKeep(); setTimeout(()=>this.openSwap(),300); return; }
+    if(id==='dudh') state.moods[3]=opt; if(id==='aguada') state.moods[1]='aguada';
+    this.renderPlanKeep(); this.animTotal();
+    const tgt={early:'it-flight',dudh:'day4',aguada:'day2'}[id]; setTimeout(()=>this.flash(tgt),250);
+    this.toast({early:'Switched to the 05:50. Saved ₹2,100. Day 1 updated.',dudh:'Dudhsagar added on Day 4. Total updated.',aguada:'Fort Aguada added on Day 2. +₹2,600.'}[id], undo);
+  },
+  unAdd(id){
+    delete state.added[id]; if(id==='dudh') delete state.moods[3]; if(id==='aguada') delete state.moods[1];
+    if(id==='north' && state.hotel==='baga') state.hotel='caravela'; state.tr='non'; state.cab='innova';
+    this.renderPlanKeep(); this.toast('Removed. Back to my original pick.');
+  },
+
+  why(k){ $('r-'+k).classList.toggle('open'); },
+  toggleLock(k){
+    state.locked[k]=!state.locked[k]; this.renderPlanKeep();
+    this.toast(state.locked[k]?`Locked. I won't change the ${k} when re-planning.`:`Unlocked. I can suggest changes to the ${k}.`);
+  },
+  renderPlanKeep(){ const s=$('planScroll').scrollTop; const open=[...document.querySelectorAll('.reason.open')].map(r=>r.id); this.renderPlan(); $('planScroll').scrollTop=s; open.forEach(id=>$(id)&&$(id).classList.add('open')); },
+  flash(id){ const e=$(id); if(!e) return; e.classList.add('flash'); e.scrollIntoView({behavior:'smooth',block:'center'}); setTimeout(()=>e.classList.remove('flash'),1600); },
+
+  /* ---------------- sheets ---------------- */
+  sheet(html){ $('toast').classList.remove('show'); $('sheetInner').innerHTML=html; $('scrim').classList.add('show'); $('sheet').classList.add('show'); },
+  closeSheet(instant){ $('scrim').classList.remove('show'); $('sheet').classList.remove('show'); },
+
+  openFixes(){
+    const draft={...state.levers};
+    // pre-select recommended if nothing chosen
+    const LV=levers();
+    if(!Object.keys(draft).length){ let gap=total()-BUDGET; LV.filter(l=>l.rec).sort((x,y)=>y.save-x.save).forEach(l=>{ if(gap>0){ draft[l.id]=true; gap-=l.save; } }); }
+    this._draft=draft;
+    const render=()=>{
+      const saved=LV.reduce((a,l)=>a+(draft[l.id]?l.save:0),0);
+      const cur=total()+LEVERS.reduce((a,l)=>a+(state.levers[l.id]?l.save:0),0); // total without levers
+      const after=cur-saved, diff=after-BUDGET;
+      this.sheet(`<div class="sh-h"><h3>Close the ${fmt(cur-BUDGET)} gap</h3><p>I've ticked the ones that cost your family the least. Each option says who it affects.</p></div>
+      <div class="sh-b">${LV.map(l=>`<button class="lever ${draft[l.id]?'on':''} ${l.warn?'no':''}" onclick="App._toggleDraft('${l.id}')">
+          <span class="cb">${draft[l.id]?'✓':''}</span>
+          <span class="lt"><b>${l.title}</b><span>${l.cost}</span>
+            <span class="who-hit">${l.hits.map(h=>{const p=PEOPLE.find(x=>x.id===h);return `<span class="pill ${l.warn?'r':'a'}">${p.face} ${p.name}</span>`}).join('')}${l.rec?'<span class="pill g">Recommended</span>':''}${l.warn?'<span class="pill r">Not recommended</span>':''}</span></span>
+          <span class="save">−${fmt(l.save)}</span></button>`).join('')}
+        <div class="lever" style="cursor:default;border-style:dashed"><span class="cb" style="border-color:#DDD"></span><span class="lt"><b>Or raise the budget to ${fmt(cur)}</b><span>Keep everything as planned.</span></span><button class="lnk" onclick="App._raise()">Use this</button></div>
+      </div>
+      <div class="sh-f"><div style="flex:1"><b style="font-size:17px">${fmt(after)}</b><div style="font-size:12px;color:${diff>0?'#D93025':'#0B7A52'}">${diff>0?fmt(diff)+' still over':fmt(-diff)+' under budget'}</div></div>
+        <button class="btn" onclick="App._applyFixes()">Apply ${Object.values(draft).filter(Boolean).length} change${Object.values(draft).filter(Boolean).length===1?'':'s'}</button></div>`);
+    };
+    this._renderFixes=render; render();
+  },
+  _toggleDraft(id){ this._draft[id]=!this._draft[id]; this._renderFixes(); },
+  _applyFixes(){
+    const prev={...state.levers}, prevStart=state.start, moved=!!this._draft.dates; state.levers={...this._draft};
+    delete state.levers.dates; if(moved) state.start=DEF_START;
+    Object.keys(state.levers).forEach(k=>{ if(!state.levers[k]) delete state.levers[k]; });
+    this.closeSheet(); this.renderPlanKeep(); this.animTotal();
+    this.toast(moved?`Moved to ${rangeShort()}. Same plan, cheaper dates.`:'Done. Only the pieces you picked changed.', ()=>{ state.levers=prev; state.start=prevStart; this.renderPlanKeep(); });
+    setTimeout(()=>this.flash('it-flight'),250);
+  },
+  _raise(){ const prev=BUDGET; BUDGET=total(); this.closeSheet(); this.renderPlanKeep(); this.toast(`Budget raised to ${fmt(BUDGET)}. Plan kept as it is.`, ()=>{ BUDGET=prev; this.renderPlanKeep(); }); },
+
+  animTotal(){ const el=$('botTotal'); el.style.transition='color .3s'; el.style.color='#11A670'; setTimeout(()=>el.style.color='',900); },
+
+  openPick(kind){
+    if(kind==='tr'&&state.locked.flight) return this.toast('Travel is locked. Unlock it to swap.');
+    const D=kind==='tr'?TR:CAB, cur=state[kind], t=total();
+    this.sheet(`<div class="sh-h"><h3>${kind==='tr'?'Swap how you get there':'Swap the cab'}</h3><p>Every option, cheapest first. Only this piece changes.</p></div>
+      <div class="sh-b">${LAD[kind].map(id=>{ const o=D[id], d=o.cost-D[cur].cost, tot=t+d; return `<button class="lever ${id===cur?'on':''}" onclick="App.applyPick('${kind}','${id}')"><span class="cb">${id===cur?'✓':''}</span>
+        <span class="lt"><b>${o.label}</b><span>${kind==='tr'?o.h+(o.sub?'. '+o.sub:''):o.sub}</span>
+        <span class="who-hit">${o.pills.slice(0,2).map(p=>`<span class="pill ${p[0]}">${p[1]}</span>`).join('')}${tot<=BUDGET?'<span class="pill g">Fits your budget</span>':`<span class="pill a">${fmt(tot-BUDGET)} over</span>`}</span></span>
+        <span class="save" style="font-size:13px;color:${d>0?'#B26A00':d<0?'#11A670':'#6B6B6B'}">${id===cur?'Current':sgn(d)}</span></button>`; }).join('')}</div>`);
+  },
+  applyPick(kind,id){
+    const snap=JSON.stringify({tr:state.tr,cab:state.cab,hotel:state.hotel,levers:state.levers,added:state.added}), key=kind==='hotel'?'hotel':kind;
+    if(state[key]===id){ this.closeSheet(); return; }
+    const before=total(); state[key]=id;
+    if(!direct()){ delete state.levers.early; delete state.added.early; } if(state.cab==='basic') delete state.levers.shuttle; if(HOTELS[state.hotel].nightly<15000) delete state.levers.oneroom;
+    this.closeSheet(); this.renderPlanKeep(); this.animTotal();
+    setTimeout(()=>this.flash({tr:'it-flight',cab:'it-cab',hotel:'it-hotel'}[kind]),250);
+    const name=kind==='tr'?TR[id].label:kind==='cab'?CAB[id].label:HOTELS[id].name, over=total()-BUDGET;
+    this.toast(`Switched to ${name}. ${sgn(total()-before)}.${over>0?' Now '+fmt(over)+' over budget.':''}`, ()=>{ Object.assign(state,JSON.parse(snap)); this.renderPlanKeep(); });
+  },
+  openSwap(){
+    if(state.locked.hotel){ return this.toast('The hotel is locked. Unlock it to swap.'); }
+    let pick=state.hotel;
+    const render=()=>{
+      this.sheet(`<div class="sh-h"><h3>Swap the stay</h3><p>Flights, cabs and days stay as they are. I'll re-check the drive times after you pick.</p></div>
+      <div class="sh-b"><div style="font-size:12px;color:#6B6B6B;margin-bottom:6px">Filters from your family's needs</div>
+        <div class="fchips"><span class="chip on" style="padding:6px 10px;font-size:12px">Ground floor · 9</span><span class="chip on" style="padding:6px 10px;font-size:12px">Kids pool · 14</span><span class="chip on" style="padding:6px 10px;font-size:12px">Veg kitchen · 31</span></div>
+        <div style="font-size:12.5px;margin:4px 0 12px"><b>${Object.values(HOTELS).filter(h=>!h.north||state.added.north).length} of 214 stays</b> have a ground-floor room, cheapest first. A green tag means it fits your budget.</div>${Object.values(HOTELS).filter(h=>!h.north||state.added.north).sort((x,y)=>x.nightly-y.nightly).map(h=>{
+        const d=(h.nightly-HOTELS[state.hotel].nightly)*4;
+        return `<button class="alt ${pick===h.id?'on':''}" onclick="App._pickHotel('${h.id}')">
+          <div class="item-top"><div><div class="k">${h.area}</div><h4>${h.name}${h.id===state.hotel?' <span class="pill n">current</span>':''}</h4><div class="sub">${h.rooms}</div><div class="sub" style="margin-top:5px">${rate(h)}</div></div>
+          <div class="price">${fmt(h.nightly*4+staySur())}<small>${d===0?'4 nights':d<0?`<span class="was">${fmt(HOTELS[state.hotel].nightly*4+staySur())}</span> <span class="offp">${Math.round(-d/(HOTELS[state.hotel].nightly*4+staySur())*100)}% less</span>`:`<span style="color:#B26A00;font-weight:600">+${fmt(d)}</span>`}</small></div></div>
+          <div style="margin-top:6px">${total()+d<=BUDGET?'<span class="pill g">Fits your budget</span>':`<span class="pill a">${fmt(total()+d-BUDGET)} over your budget</span>`}</div><div class="mtx">${PEOPLE.map(p=>`<div class="${h.fit[p.id]?'ok':'bad'}"><i>${p.face}</i>${p.name}</div>`).join('')}</div>
+          <div class="fit">${h.tags.map(t=>`<span class="pill ${t[0]}">${t[1]}</span>`).join('')}</div></button>`}).join('')}
+      </div>
+      <div class="sh-f"><button class="btn ghost" style="flex:1" onclick="App.closeSheet()">Keep current</button><button class="btn" style="flex:1" ${pick===state.hotel?'disabled':''} onclick="App._doSwap()">Swap stay</button></div>`);
+    };
+    this._pickHotel=id=>{pick=id;render();};
+    this._doSwap=()=>{
+      const prev=state.hotel; state.hotel=pick; this.closeSheet(); this.renderPlanKeep();
+      const bad=PEOPLE.filter(p=>!HOTELS[pick].fit[p.id]).map(p=>p.name);
+      this.toast(`Swapped. Drive times re-checked.${bad.length?' Heads up: not ideal for '+bad.join(', ')+'.':''}`, ()=>{state.hotel=prev;this.renderPlanKeep();});
+      setTimeout(()=>this.flash('it-hotel'),250);
+    };
+    render();
+  },
+
+  openAsk(){
+    this.sheet(`<div class="sh-h"><h3>Change something</h3><p>Say it the way you'd say it to a travel agent. I'll only touch what you ask about.</p></div>
+      <div class="sh-b">
+        <div class="ask" style="border-width:1px;border-color:#CFCFCF"><input id="askIn" placeholder="e.g. Day 3 looks tiring for Mummy" onkeydown="if(event.key==='Enter')App._ask(this.value)"><button class="mic" aria-label="Speak" onclick="App.mic('askIn',this)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></button><button class="go" onclick="App._ask(document.getElementById('askIn').value)">→</button></div>
+        <div class="chips" style="margin-top:12px">
+          <button class="chip" onclick="App._ask('Make Day 3 lighter for Mummy and Aarav')">Make Day 3 lighter</button>
+          <button class="chip" onclick="App._ask('Add a temple visit for Mummy')">Add a temple for Mummy</button>
+          <button class="chip" onclick="App._ask('Cheaper hotel')">Cheaper hotel</button>
+        </div>
+      </div>`);
+    setTimeout(()=>$('askIn')&&$('askIn').focus(),300);
+  },
+  async _ask(q){
+    q=(q||'').trim(); if(!q) return;
+    $('sheetInner').querySelector('.sh-b').innerHTML=`<div class="msg me" style="margin-left:auto;width:fit-content">${q.replace(/</g,'&lt;')}</div><div style="margin-top:10px" class="typing"><i></i><i></i><i></i></div>`;
+    await wait(1100);
+    if(/day ?3|lighter|tir/i.test(q)){
+      const pm=state.moods[2]; state.moods[2]='split'; this.closeSheet(); this.renderPlanKeep(); this.flash('day3');
+      this.toast('Day 3 split: water sports for 3, slow morning for 3. Same price.', ()=>{state.moods[2]=pm;this.renderPlanKeep();});
+    } else if(/temple|mandir/i.test(q)){
+      state.temple=true; this.closeSheet(); this.renderPlanKeep(); this.flash('day4');
+      this.toast('Added Mangueshi temple on Day 4 at 8 am, before the heat. +40 min in the cab.', ()=>{state.temple=false;this.renderPlanKeep();});
+    } else if(/cheap|hotel|stay/i.test(q)){
+      this.closeSheet(); setTimeout(()=>this.openSwap(),300);
+    } else {
+      $('sheetInner').querySelector('.sh-b').innerHTML=`<div class="bubble" style="font-size:13.5px">In this prototype I can only act on the three suggestions. In the real product, I'd tell you which parts of the plan would change before touching anything.</div><button class="btn sm" style="margin-top:12px" onclick="App.openAsk()">Try a suggestion</button>`;
+    }
+  },
+
+  openShare(){
+    const t=total();
+    this.sheet(`<div class="sh-h"><h3>Get the family's nod</h3><p>Send a read-only plan to the family group. Anyone can react or ask something. Nothing gets booked from their side.</p></div>
+      <div class="sh-b"><div class="wa" id="wa">
+        <div class="wab out"><div class="preview"><div class="pv-top">Goa, with everyone · ${rangeShort()}</div><div class="pv-b">${trOf().air?'✈︎':'🚆'} ${trOf().label}<br>🏨 ${HOTELS[state.hotel].name}, ground floor for Mummy<br>👶 Rest kept free 1–3 pm daily<br><b>${fmt(t)} for 6</b> · tap to see the full plan</div></div>Ek baar dekh lo sab, I'll book tonight 🙏<div class="tick">9:41 ✓✓</div></div>
+      </div></div>
+      <div class="sh-f"><button class="btn" style="flex:1" id="sendWa" onclick="App._sendWa()">Send to "Family 🏠"</button></div>`);
+  },
+  async _sendWa(){
+    const b=$('sendWa'); b.disabled=true; b.textContent='Sent · waiting for replies…';
+    await wait(1300);
+    $('wa').insertAdjacentHTML('beforeend',`<div class="wab in" style="animation:pop .3s"><div class="nm">Rohan</div>👍 Looks good. Flight time is perfect.</div>`);
+    await wait(1300);
+    $('wa').insertAdjacentHTML('beforeend',`<div class="wab in" style="animation:pop .3s"><div class="nm">Mummy</div>Mandir kya koi paas mein hai? 🙏</div>`);
+    await wait(900);
+    $('wa').insertAdjacentHTML('beforeend',`<div class="bubble" style="margin-top:10px;font-size:13px;animation:pop .3s;border-radius:12px"><div class="ai-name"><span class="av">H</span>Humsafar picked up a question</div>Mummy asked about a temple. Shri Mangueshi is 40 min away. Add it to Day 4 at 8 am, before it gets hot?<div style="display:flex;gap:8px;margin-top:10px"><button class="btn sm" onclick="state.temple=true;App.closeSheet();App.renderPlanKeep();App.flash('day4');App.toast('Added to Day 4. Mummy will see it in the shared plan.')">Add it</button><button class="btn sm ghost" onclick="App.closeSheet()">Not now</button></div></div>`);
+    b.textContent='Rohan 👍 · Mummy asked 1 question';
+    state.shared=true;
+  },
+
+  /* ---------------- review + booking ---------------- */
+  review(){
+    state.assist=false;
+    const t=total(), over=t-BUDGET, h=HOTELS[state.hotel], saved=LEVERS.reduce((a,l)=>a+(state.levers[l.id]?l.save:0),0);
+    $('reviewBody').innerHTML=`<div class="rv">
+      ${over>0?`<div class="alert r" style="margin:0 0 12px"><span>⚠️</span><div class="ac"><b>Still ${fmt(over)} over budget</b>You can book anyway, or <button class="lnk" onclick="App.go('s-plan');App.openFixes()">see the fixes</button>.</div></div>`:''}
+      <div class="card"><div class="k muted" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em">What you're booking</div>
+        <div class="rv-row"><span>${trOf().air?'✈︎':'🚆'} ${trOf().label}, 6 return</span><span>${fmt(flightsNow()-(state.levers.early?5400:0))}</span></div>
+        <div class="cxl"><span class="pill ${trOf().air?'g':'a'}">${trOf().air?'Free cancellation till '+dShort(dAt(-7)):trOf().cxl}</span></div>
+        <div class="rv-row" style="margin-top:6px"><span>🏨 ${h.name}, 2 rooms × 4 nights</span><span>${fmt(h.nightly*4+staySur())}</span></div>
+        <div class="cxl"><span class="pill g">Free cancellation till ${dShort(dAt(-3))}</span></div>
+        <div class="rv-row" style="margin-top:6px"><span>🚙 ${cabOf().label}</span><span>${fmt(CAB[state.cab].cost-(state.levers.shuttle?3800:0))}</span></div>
+        <div class="cxl"><span class="pill a">₹500 fee if cancelled within 24 h</span></div>
+        <div class="rv-row" style="margin-top:6px"><span>🐬 Outings (dolphin trip${state.levers.spice?'':', spice farm'})</span><span>${fmt(BASE.dolphin+(state.levers.spice?2400:BASE.spice))}</span></div>
+        ${extras()?`<div class="rv-row" style="margin-top:6px"><span>📅 Your day changes</span><span>${sgn(extras())}</span></div>`:''}
+        <div class="rv-row" style="border-top:1px solid #EEE;margin-top:8px;padding-top:10px"><span><b>Total</b></span><span style="font-size:16px">${saved>0?`<span class="was">${fmt(t+saved)}</span> `:''}${fmt(t)}${saved>0?` <span class="offp">${Math.round(saved/(t+saved)*100)}% saved</span>`:''}</span></div>
+        <div style="font-size:12px;color:#6B6B6B;text-align:right">${pp(t)} per person · includes ${fmt(taxes(t))} taxes &amp; fees</div>
+      </div>
+      <div class="card"><div class="k muted" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Travellers</div>
+        <div class="trav">${PEOPLE.map(p=>{const saved=['neha','rohan','aarav'].includes(p.id);const a=state.ages[p.id]||'';const band=p.id==='aarav'?'Child, 4':a==='Under 12'?'Child':/60|70/.test(a)?'Senior':'Adult';return `<div><span>${p.face} ${saved?(p.id==='neha'?'You':p.name):p.name} <span class="muted" style="font-size:11.5px">· ${band}</span></span>${saved?'<span class="pill g">Saved traveller</span>':'<button class="lnk" onclick="this.outerHTML=\'<span class=&quot;pill g&quot;>Added ✓</span>\'">Add name as on ID</button>'}</div>`}).join('')}</div>
+        <p style="font-size:12px;color:#6B6B6B;margin-top:8px">${['ba','papa'].some(k=>/60|70/.test(state.ages[k]||''))?'Senior fares applied where 60+.':''} ${trOf().air?'Need a wheelchair at the airport?':'Need a porter or battery cart at Madgaon station?'} <button class="lnk" onclick="state.assist=true;this.textContent='Requested ✓'">Request one</button></p>
+      </div>
+      <div class="card" style="font-size:12.5px;color:#4D4D4D;line-height:1.5"><b style="color:#1A1A1A">How booking works</b><br>I book these one by one. If any piece fails, I hold the rest for 15 minutes and ask you what to do. That way you aren't left with flights and no room.</div>
+    </div>`;
+    $('rvTotal').textContent=fmt(t);
+    this.go('s-review');
+  },
+
+  payStep(){
+    const t=total(), h=hotelAmt(), now=t-h;
+    this.sheet(`<div class="sh-h" style="background:linear-gradient(#DDF3EA,#fff);border-radius:20px 20px 0 0;margin-top:-16px;padding-top:26px"><h3 style="font-size:21px">Book the stay with ₹0 payment</h3><p>Cleartrip's Book at ₹0 covers the hotel. Travel and the cab have to be paid now.</p></div>
+      <div class="sh-b">
+        <div class="rv-row"><span>Pay today<br><span class="muted" style="font-size:12px;font-weight:400">Travel, cab, outings</span></span><span>${fmt(now)}</span></div>
+        <div class="rv-row" style="border-top:1px dashed #E7E7E7;margin-top:6px;padding-top:12px"><span>Pay by ${dShort(dAt(-1))}<br><span class="muted" style="font-size:12px;font-weight:400">${HOTELS[state.hotel].name}, 4 nights</span></span><span>${fmt(h)}</span></div>
+        <div class="fit" style="margin-top:10px"><span class="pill g">Hotel: free cancellation till ${dShort(dAt(-3))}</span><span class="pill ${trOf().air?'g':'a'}">${trOf().air?'Flights: free cancel till '+dShort(dAt(-7)):'Train: '+trOf().cxl}</span></div>
+        <p style="font-size:12px;color:#6B6B6B;margin-top:12px">Payment itself is outside this prototype. If any booking fails, you are refunded for that piece only.</p>
+      </div>
+      <div class="sh-f"><button class="btn" id="payGo" style="flex:1;background:#1A1A1A" onclick="App.closeSheet();App.book()">Pay ${fmt(now)} and book all</button></div>`);
+  },
+  async book(){
+    this.clearTimers(); const run=this.runId;
+    state.bookFix=null;
+    const h=HOTELS[state.hotel];
+    $('bookBody').innerHTML=`<div class="bk"><h2>Booking 4 pieces</h2><p class="muted" style="font-size:13px">One payment, four confirmations.</p>
+      <div class="card bk-item" id="b0"><div class="st"></div><div class="bt">${trOf().label} · 6 people<small>Waiting</small></div></div>
+      <div class="card bk-item" id="b1"><div class="st"></div><div class="bt">${h.name} · Room 1<small>Waiting</small></div></div>
+      <div class="card bk-item" id="b2"><div class="st"></div><div class="bt">${h.name} · Room 2, ground floor for Mummy<small>Waiting</small></div></div>
+      <div class="card bk-item" id="b3"><div class="st"></div><div class="bt">Cab + outings<small>Waiting</small></div></div>
+      <div id="fixSlot"></div></div>`;
+    this.go('s-book');
+    const set=(i,cls,txt,ic)=>{ const e=$('b'+i); e.className='card bk-item '+cls; e.querySelector('small').textContent=txt; e.querySelector('.st').textContent=ic||''; };
+    for(const i of [0,1]){ set(i,'wait','Confirming…'); await wait(1100); if(run!==this.runId) return; set(i,'ok', i===0?travelRef():'Confirmation CBR-88214','✓'); }
+    set(2,'wait','Confirming…'); await wait(1400); if(run!==this.runId) return;
+    set(2,'fail','Sold out a moment ago','!');
+    set(0,'held','Held, '+travelRef(),'⏸'); set(1,'held','Held, CBR-88214','⏸');
+    let secs=15*60;
+    $('fixSlot').innerHTML=`<div class="fix">
+      <h3>The ground-floor room just sold out</h3>
+      <p>Someone booked it while we were confirming. Your tickets and Room 1 are safe and held for <span class="timer" id="tmr">15:00</span>. You haven't been charged for anything that isn't confirmed.</p>
+      <div style="margin-top:12px">
+        <button class="lever on" style="margin-bottom:8px" onclick="App._fix('villa')"><span class="cb">✓</span><span class="lt"><b>Garden villa, same hotel</b><span>Also ground floor, 20 m from the lift. Keeps "no stairs".</span><span class="who-hit"><span class="pill g">${PEOPLE.find(x=>x.id==='ba').face} Mummy ✓</span><span class="pill g">Recommended</span></span></span><span class="save" style="color:#B26A00">+₹2,400</span></button>
+        <button class="lever" style="margin-bottom:8px" onclick="App._fix('first')"><span class="cb"></span><span class="lt"><b>First-floor deluxe, same hotel</b><span>Same price. Lift is 30 m away, but it's a step-up bathroom.</span><span class="who-hit"><span class="pill r">${PEOPLE.find(x=>x.id==='ba').face} Mummy ✕</span></span></span><span class="save" style="color:#6B6B6B">±₹0</span></button>
+        <button class="lever" onclick="App._fix('cancel')"><span class="cb"></span><span class="lt"><b>Cancel everything</b><span>Full refund on tickets and Room 1, no fee. Back to your plan.</span></span></button>
+      </div></div>`;
+    const tick=()=>{ if(run!==this.runId) return; secs--; const e=$('tmr'); if(!e) return; e.textContent=`${String(Math.floor(secs/60)).padStart(2,'0')}:${String(secs%60).padStart(2,'0')}`; if(secs>0) this.timers.push(setTimeout(tick,1000)); };
+    this.timers.push(setTimeout(tick,1000));
+  },
+  async _fix(k){
+    const ask={
+      villa:['Book the garden villa?','Adds ₹2,400. New total '+fmt(total()+2400)+'. Your tickets and Room 1 stay as they are.','Yes, book it'],
+      first:['This breaks "no stairs" for Mummy','The first-floor room has a step-up bathroom and is 30 m from the lift. Same price. Book it anyway?','Book it anyway'],
+      cancel:['Cancel the whole trip?','Tickets and Room 1 are released and refunded in full. Your plan stays saved as a draft.','Yes, cancel all'] }[k];
+    this.sheet(`<div class="sh-h"><h3>${ask[0]}</h3><p>${ask[1]}</p></div><div class="sh-f"><button class="btn ghost" style="flex:1" onclick="App.closeSheet()">Go back</button><button class="btn" style="flex:1;${k==='villa'?'':'background:#D93025'}" onclick="App.closeSheet();App._fixGo('${k}')">${ask[2]}</button></div>`);
+  },
+  async _fixGo(k){
+    if(k==='cancel'){ this.clearTimers(); this.go('s-plan'); this.toast('Cancelled. Full refund started, ₹0 charged. Your plan is still here.'); return; }
+    this.clearTimers(); const run=this.runId;
+    state.bookFix=k;
+    $('fixSlot').innerHTML='';
+    const e=$('b2'); e.className='card bk-item wait'; e.querySelector('.bt').innerHTML=`${HOTELS[state.hotel].name} · ${k==='villa'?'Garden villa (ground floor)':'First-floor deluxe'}<small>Confirming…</small>`; e.querySelector('.st').textContent='';
+    [0,1].forEach(i=>{ const b=$('b'+i); b.className='card bk-item ok'; b.querySelector('.st').textContent='✓'; b.querySelector('small').textContent=i===0?travelRef():'Confirmation CBR-88214'; });
+    await wait(1200); if(run!==this.runId) return;
+    e.className='card bk-item ok'; e.querySelector('.st').textContent='✓'; e.querySelector('small').textContent='Confirmation CBR-88219';
+    const c=$('b3'); c.className='card bk-item wait'; c.querySelector('small').textContent='Confirming…';
+    await wait(1100); if(run!==this.runId) return;
+    c.className='card bk-item ok'; c.querySelector('.st').textContent='✓'; c.querySelector('small').textContent='Driver details 24 h before pickup';
+    await wait(700); if(run!==this.runId) return;
+    this.done();
+  },
+  pdf(){
+    const h=HOTELS[state.hotel], T=trOf(), L=state.levers, t=total(), due=hotelAmt(), e=state.added.early;
+    const legs = T.air===2 ? [[dLong(dAt(0)),`AMD ${e?'05:50':'09:40'} → GOI ${e?'07:25':'11:15'}`,'Non-stop'],[dLong(dAt(4)),`GOI ${L.early?'11:55':'13:10'} → AMD ${L.early?'13:30':'14:45'}`,'Non-stop']]
+      : T.air===1 ? [[dLong(dAt(0)),'AMD 08:20 → GOI 13:05','1 stop, Mumbai, 1h35'],[dLong(dAt(4)),'GOI 11:40 → AMD 16:25','1 stop, Mumbai']]
+      : [[dLong(dAt(-1)),'Ahmedabad Jn 18:10 → Madgaon Jn 11:20 (next day)','Overnight, 17 h'],[dLong(dAt(4)),'Madgaon Jn 14:40 → Ahmedabad Jn 07:50 (next day)','Overnight, 17 h']];
+    const hubs = T.air?[HUB.amd,HUB.goi]:[HUB.adi,HUB.mao];
+    const room2 = state.bookFix==='villa'?'Garden villa, ground floor':state.bookFix==='first'?'First-floor deluxe':'Room 2, ground floor';
+    const used=new Map(); const days=[0,1,2,3,4].map(i=>{ const d=dayPick(i); return `<div class="day"><b class="d">Day ${i+1} · ${dLong(dAt(i))} · ${d.label}</b><table>${d.slots.map(s=>{ const pl=PLACES.find(p=>p[0].test(s[1])); if(pl) used.set(pl[1],pl[2]); return `<tr><td style="width:44pt" class="ref">${s[0]}</td><td>${s[1]}${pl?`<div class="mut">${pl[2]}</div>`:''}</td></tr>`; }).join('')}</table></div>`; }).join('');
+    const band=p=>p.id==='aarav'?'Child, 4':/60|70/.test(state.ages[p.id]||'')?'Senior':state.ages[p.id]==='Under 12'?'Child':'Adult';
+    $('pack').innerHTML=`<div class="brand"><b>cleartrip · Humsafar</b><span>Trip pack · made ${dShort(new Date())}</span></div>
+      <h1>Goa, with everyone</h1><div class="mut">${rangeShort()} · 5 days, 4 nights · 6 travellers · Ahmedabad to Goa and back</div>
+      <h2>Bookings</h2>
+      <div class="box"><b class="t">${T.label}</b><div class="mut">${T.air?'Booking':'Rail'} reference <span class="ref">${travelRef()}</span> · 6 ${T.air?'seats':'berths'}${T.air?'':' · coach and berths are allotted at charting'}</div>
+        <table><tr><th>Date</th><th>Journey</th><th>Note</th></tr>${legs.map(l=>`<tr><td>${l[0]}</td><td class="ref">${l[1]}</td><td>${l[2]}</td></tr>`).join('')}</table>
+        <div class="mut" style="margin-top:4pt">${hubs.map(x=>`<b>${x[0]}:</b> ${x[1]}`).join('<br>')}${state.assist?`<br><b>Requested:</b> ${T.air?'wheelchair at the airport':'porter or battery cart at Madgaon station'}`:''}</div></div>
+      <div class="box"><b class="t">${h.name}</b><div class="mut">${HADDR[h.id]}</div>
+        <table><tr><th>Room</th><th>Confirmation</th><th>Check-in</th><th>Check-out</th></tr>
+        <tr><td>Room 1</td><td class="ref">CBR-88214</td><td>${dLong(dAt(0))}, from 14:00</td><td>${dLong(dAt(4))}, by 11:00</td></tr>
+        <tr><td>${room2}</td><td class="ref">CBR-88219</td><td>${dLong(dAt(0))}, from 14:00</td><td>${dLong(dAt(4))}, by 11:00</td></tr></table>
+        <div class="mut" style="margin-top:4pt">Booked at ₹0. ${fmt(due)} is due by ${dShort(dAt(-1))}. Free cancellation till ${dShort(dAt(-3))}.${state.custom.length?'<br><b>Your notes sent to the hotel:</b> '+state.custom.map(c=>c.replace(/</g,'&lt;')).join('; '):''}</div></div>
+      <div class="grid"><div class="box"><b class="t">${cabOf().label}</b><div class="mut">Reference <span class="ref">CAB-40577</span><br>${cabOf().sub}. Child seat fitted.<br>Driver name and number reach you 24 h before pickup.<br><b>First pickup:</b> ${T.air?HUB.goi[0]:HUB.mao[0]}, ${dLong(dAt(0))}</div></div>
+      <div class="box"><b class="t">Outings</b><div class="mut">Reference <span class="ref">ACT-21903</span><br>Booked through Cleartrip for the days listed in the itinerary. Show this page at the counter.</div></div></div>
+      <h2>Payment</h2><table>
+        <tr><td>Paid today (travel, cab, outings)</td><td class="num ref">${fmt(t-due)}</td></tr>
+        <tr><td>Due by ${dShort(dAt(-1))} (stay)</td><td class="num ref">${fmt(due)}</td></tr>
+        <tr><td><b>Trip total</b> <span class="mut">includes ${fmt(taxes(t))} taxes and fees · ${pp(t)} per person</span></td><td class="num ref">${fmt(t)}</td></tr></table>
+      <h2>Travellers</h2><table><tr>${PEOPLE.map(p=>`<td>${p.name==='You'?'Neha (lead)':p.name}<div class="mut">${band(p)}</div></td>`).join('')}</tr></table>
+      <h2>Day by day</h2>${days}
+      <h2>Addresses</h2><table><tr><th>Place</th><th>Address</th></tr>
+        <tr><td>${h.name}</td><td>${HADDR[h.id]}</td></tr>${hubs.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join('')}${[...used].map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join('')}</table>
+      <div class="foot">Concept prototype by Bhaumik Amin. Not a real booking. References, prices and timings are simulated, hotel names are fictional, and addresses are indicative.</div>`;
+    setTimeout(()=>window.print(),150);
+  },
+  done(){
+    $('doneBody').innerHTML=`<div class="done-hero"><div class="big">✓</div><h2>Goa is booked</h2><p>${fmt(total()-hotelAmt())} paid today · hotel ${fmt(hotelAmt())} due by ${dShort(dAt(-1))}<br>4 confirmations sent to you and the family group</p></div>
+      <div class="card next"><b style="font-size:14px">What I'll keep doing</b><ul style="margin-top:6px">
+        <li><span>✈︎</span>Watch your ${trOf().air?'flight':'train'} and tell you first if it's delayed or rescheduled.</li>
+        <li><span>⏰</span>${trOf().air?`Remind you on ${dShort(dAt(-2))} to do web check-in for all six.`:'Send you the coach and berth numbers as soon as the chart is prepared.'}</li>
+        <li><span>🧒🏽</span>Send the driver the child seat note the day before.</li>
+        <li><span>💬</span>Plans change? Just tell me. I'll show you what it costs before changing anything.</li></ul></div>
+      <div style="padding:0 16px 8px"><button class="btn" style="width:100%;background:#1A1A1A" onclick="App.pdf()">Download trip PDF</button><p class="muted" style="font-size:12px;text-align:center;margin-top:8px">Bookings, day plan and every address. Choose "Save as PDF" in the print window.</p></div>
+      <div style="padding:8px 16px 30px"><button class="btn ghost" style="width:100%" onclick="App.restart()">Back to home</button></div>`;
+    this.go('s-done');
+  },
+
+  /* ---------------- jumps for reviewers ---------------- */
+  jumpPlan(overBudget, open){
+    this.clearTimers(); BUDGET=150000; state.start=DEF_START; state.moods={}; state.added={}; state.levers={}; state.hotel='caravela'; state.tr='non'; state.cab='innova'; state.day3Light=false; state.temple=false; state.bookFix=null; state.locked={};
+    this.renderPlan(); this.go('s-plan'); $('planScroll').scrollTop=0;
+    setTimeout(()=>{ if(overBudget) this.openFixes(); if(open==='swap') this.openSwap(); if(open==='share') this.openShare(); },400);
+  },
+  jumpBook(){ this.clearTimers(); BUDGET=150000; state.start=DEF_START; state.levers={early:true,spice:true}; state.hotel='caravela'; state.tr='non'; state.cab='innova'; this.renderPlan(); this.review(); setTimeout(()=>this.book(),300); },
+  jumpFail(){ state.fail=true; this.toPlanning(); },
+
+  openStates(){
+    const J=[['Start from the beginning','App.restart()'],['Plan is over budget','App.jumpPlan(true)'],['Swap the hotel',"App.jumpPlan(false,'swap')"],['Send to family for a nod',"App.jumpPlan(false,'share')"],['Room sells out mid-booking','App.jumpBook()'],['Planning fails (network drop)','App.jumpFail()']];
+    this.sheet(`<div class="sh-h"><h3>Jump to a state</h3><p>For reviewers. Every edge case in the prototype.</p></div><div class="sh-b">${J.map(j=>`<button class="lever" onclick="App.closeSheet();${j[1]}"><span class="lt"><b>${j[0]}</b></span><span>→</span></button>`).join('')}</div>`);
+  },
+  mic(inputId, btn){
+    const inp=$(inputId); if(!inp) return;
+    if(this._rec){ try{this._rec.stop()}catch(e){} return; }
+    const demo={homeInput:'Plan 5 days in Goa for 6 of us. Me, my husband Rohan, our 4 year old Aarav, Mummy-Papa, and my niece Kavya.',chatInput:state.step==='needs'?'Papa needs low-sugar meals':'Mummy sleeps by 9 pm',askIn:'Make Day 3 lighter for Mummy and Aarav'}[inputId];
+    const ph=inp.placeholder, end=()=>{ btn.classList.remove('on'); inp.placeholder=ph; this._rec=null; };
+    const fake=()=>{ let k=0; inp.value=''; const w=demo.split(' '); const t=setInterval(()=>{ inp.value=w.slice(0,++k).join(' '); if(k>=w.length){ clearInterval(t); end(); this.toast('No mic access here, so I typed an example. Edit it or send.'); } },70); };
+    btn.classList.add('on'); inp.placeholder='Listening… speak now';
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){ this._rec={stop(){}}; setTimeout(fake,900); return; }
+    const r=new SR(); this._rec=r; r.lang='en-IN'; r.interimResults=true; let got=false;
+    r.onresult=e=>{ got=true; inp.value=[...e.results].map(x=>x[0].transcript).join(''); };
+    r.onerror=()=>{ if(!got){ r.onend=null; this._rec={stop(){}}; setTimeout(fake,500); } };
+    r.onend=()=>{ if(got){ end(); inp.focus(); } else { r.onerror&&r.onerror(); } };
+    let heard=false; r.onaudiostart=()=>{heard=true};
+    try{ r.start(); setTimeout(()=>{ if(!heard&&!got&&this._rec===r){ r.onend=null; r.onerror=null; try{r.abort()}catch(e){} this._rec={stop(){}}; fake(); } },2500); }catch(e){ setTimeout(fake,500); }
+  },
+  toast(msg, undo){
+    clearTimeout(this._tt);
+    $('toastMsg').textContent=msg; const b=$('toastBtn');
+    b.style.display=undo?'':'none'; b.onclick=()=>{ undo&&undo(); $('toast').classList.remove('show'); };
+    $('toast').classList.add('show');
+    const hide=()=>$('toast').classList.remove('show'); const t=$('toast');
+    this._tt=setTimeout(hide, 7000);
+    t.onpointerdown=()=>clearTimeout(this._tt); t.onpointerup=()=>{ clearTimeout(this._tt); this._tt=setTimeout(hide,3000); };
+  },
+};
+function fitPhone(){ const ph=$('phone'); if(innerWidth<=760){ ph.style.transform=''; ph.style.margin=''; return; } const k=Math.min(1,(innerHeight-28)/864); ph.style.transform=k<1?`scale(${k})`:''; ph.style.margin=k<1?`${-(844*(1-k))/2}px ${-(390*(1-k))/2}px`:''; }
+addEventListener('resize',fitPhone); fitPhone();
+(()=>{ const ex=['5 days in Goa for 6 of us…','Jaipur with Mummy-Papa, 3 nights…','Somewhere cool in May with the kids…','Kerala for 8, two toddlers…']; let i=0; setInterval(()=>{ const el=$('homeInput'); if(el && !el.value && document.activeElement!==el){ i=(i+1)%ex.length; el.placeholder='e.g. '+ex[i]; } },2600); })();
+</script>
+</body>
+</html>
